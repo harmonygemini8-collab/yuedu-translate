@@ -5,7 +5,7 @@
  */
 
 import type { SegmentInput, SegmentResult } from '../shared/messages';
-import { looksTranslated } from '../shared/script';
+import { looksRefused, looksTranslated } from '../shared/script';
 import { ENGINE_TIERS, engineSupports, type EngineChoice, type TargetLang } from '../shared/settings';
 
 /** The order free engines are tried in: the one that needs no account first. */
@@ -50,7 +50,7 @@ export async function translateWithFallback(
     const byId = new Map(answers.map((r) => [r.id, r]));
     for (const s of pending) {
       const r = byId.get(s.id) ?? { id: s.id, ok: false as const, error: 'PROVIDER_UNAVAILABLE' as const };
-      if (r.ok && looksTranslated(s.text, r.text, targetLang)) {
+      if (r.ok && !looksRefused(r.text) && looksTranslated(s.text, r.text, targetLang)) {
         accepted.set(s.id, r);
         deps.onUsed?.(s.id, engine);
       }

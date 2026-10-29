@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { translateWithFallback, type EngineDeps } from '../src/background/engines';
-import { looksTranslated } from '../src/shared/script';
+import { looksRefused, looksTranslated } from '../src/shared/script';
 import type { SegmentInput, SegmentResult } from '../src/shared/messages';
 import type { EngineChoice } from '../src/shared/settings';
 
@@ -71,6 +71,21 @@ describe('engine fallback', () => {
     expect(out.calls).toEqual(['google-free']);
   });
 
+  it('treats a refusal as a failure, and keeps it if nothing does better', async () => {
+    const d = deps({
+      'google-free': (s) => s.map((x) => ({ id: x.id, ok: true as const, text: '很抱歉，我还未学习到如何回答这个问题的内容。' })),
+      microsoft: (s) => ok(s, '微软'),
+    });
+    const out = await translateWithFallback('google-free', segs, 'zh-CN', true, d);
+    expect(out.map((r) => r.ok && r.text)).toEqual(['微软a', '微软b']);
+    const same = deps({
+      'google-free': (s) => s.map((x) => ({ id: x.id, ok: true as const, text: "I'm sorry, but I can't help with that request." })),
+    });
+    const kept = await translateWithFallback('google-free', segs, 'zh-CN', true, same);
+    expect(kept.every((r) => r.ok)).toBe(true);
+    expect(kept[0]).toMatchObject({ ok: true, text: "I'm sorry, but I can't help with that request." });
+  });
+
   it('never falls back to a paid engine, but does fall back from one', async () => {
     const d = deps({ openai: () => new Error('NETWORK'), 'google-free': (s) => ok(s, '谷') });
     const out = await translateWithFallback('openai', segs, 'zh-CN', true, d);
@@ -88,6 +103,18 @@ describe('looksTranslated', () => {
     expect(looksTranslated('where [[1]] is the position of the token', '其中 [[1]] 是词元的位置', 'zh-CN')).toBe(true);
     expect(looksTranslated('The first paragraph is long enough.', 'Первый абзац достаточно длинный.', 'ru')).toBe(true);
     expect(looksTranslated('The first paragraph is long enough.', 'The first paragraph is long enough.', 'ru')).toBe(false);
+  });
+});
+
+describe('looksRefused', () => {
+  it('catches common refusal phrasings in English and Chinese, and leaves real translations alone', () => {
+    expect(looksRefused('很抱歉，我还未学习到如何回答这个问题的内容。')).toBe(true);
+    expect(looksRefused('抱歉，我无法回答这个问题。')).toBe(true);
+    expect(looksRefused("I'm sorry, but I can't help with that request.")).toBe(true);
+    expect(looksRefused('As an AI language model, I cannot provide that.')).toBe(true);
+    expect(looksRefused('第一段足够长。')).toBe(false);
+    expect(looksRefused('Sorry about the delay, the translation is below.')).toBe(false);
+    expect(looksRefused('')).toBe(false);
   });
 });
 

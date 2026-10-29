@@ -20,8 +20,8 @@ const SCRIPTS: Partial<Record<TargetLang, RegExp>> = {
   hi: /[\u0900-\u097f]/u, bn: /[\u0980-\u09ff]/u, ta: /[\u0b80-\u0bff]/u,
 };
 
-/** Placeholders that stand for formulas and names are not text of either language. */
-const PLACEHOLDER = /\[\[\s*T?\d+\s*\]\]?/gu;
+/** Placeholders that stand for formulas, names and inline code are not text of either language. */
+const PLACEHOLDER = /\[\[\s*[CT]?\d+\s*\]\]?/gu;
 const MIN_SOURCE_LATIN = 12;
 const MIN_SHARE = 0.3;
 
@@ -41,4 +41,30 @@ export function looksTranslated(source: string, translation: string, lang: Targe
   const letters = count(to, /\p{L}/u);
   if (letters === 0) return true;
   return count(to, script) / letters >= MIN_SHARE;
+}
+
+/**
+ * A free hosted model answering with a refusal ("I'm sorry, I can't help with that") instead of a translation —
+ * seen on politically sensitive paragraphs with some free Chinese models (doc/24 §2, reported by users of a
+ * competing extension whose vendor confirmed the behavior; not reproduced on our own free engines yet, but the
+ * same free models are used elsewhere). Written out as fixed phrases, not detected by the target engine, since
+ * a refusal is itself in whichever language the model chose to refuse in.
+ */
+const REFUSAL_PHRASES = [
+  /\bi'?m sorry,? (but )?i (can'?t|cannot|am not able to)\b/iu,
+  /\bi cannot (assist|help|comply|translate|provide)\b/iu,
+  /\bas an ai (language model|assistant)\b/iu,
+  /\bi'?m not able to (help|assist) with (that|this)\b/iu,
+  /很抱歉[，,]?\s*(我)?(还)?(未学习到|无法|不能|不方便)/u,
+  /抱歉[，,]?\s*(我)?(无法|不能)(协助|回答|翻译|提供)/u,
+  /我(无法|不能)(协助|提供|翻译)(这|此)/u,
+  /作为(一个)?(人工智能|AI)(语言模型|助手)/iu,
+  /对不起[，,]?\s*(我)?(无法|不能)/u,
+];
+
+/** Whether the whole answer is a refusal rather than a translation, so the fallback chain tries the next engine. */
+export function looksRefused(translation: string): boolean {
+  const text = translation.trim();
+  if (text === '') return false;
+  return REFUSAL_PHRASES.some((p) => p.test(text));
 }
