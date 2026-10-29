@@ -61,5 +61,6 @@ scripts/    build and local-preview scripts
 ## Contributing
 
 Issues and PRs are welcome for the code covered by the AGPL-3.0 license in
-this repository. There is no CLA yet, so external PRs are not merged until
-one is in place — tracked in `doc/25-plan-progress-and-open-core.md`.
+this repository. A pull request means you agree to [CLA.md](CLA.md); say so
+in the PR description, or ask there first if you're not sure it applies to
+you.

@@ -8,4 +8,4 @@
 - Engines here are limited to the client-side ones: the free Google endpoint (`src/background/google-free.ts`) and the "own key" OpenAI-compatible client (`src/background/custom-engine.ts`). Server-backed engines (Microsoft, paid Google, OpenAI via a hosted key) live in the closed-source server repository and are out of scope here.
 - Product docs live in `doc/` (Chinese); keep them in sync with code changes in the same change. Requirement IDs (FR-xx) link docs, code and tests. A few operational docs (website, release/store ops, paid plan, server deployment, admin console, invite ops, company/payment, promotion) stay in the private repo and are not duplicated here.
 - Pin dependency versions exactly and prefer releases older than 7 days.
-- No CLA yet — external PRs are reviewed but not merged until one exists (see `doc/25-plan-progress-and-open-core.md`).
+- External PRs need the contributor's agreement to `CLA.md`; not automated yet, so confirm it in the PR thread before merging.
