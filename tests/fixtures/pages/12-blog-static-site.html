@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Notes on WebAssembly threads | k.dev</title></head>
+<body>
+  <header><a href="/">k.dev</a> <nav><a href="/posts">Posts</a> <a href="/about">About</a> <a href="/index.xml">RSS</a></nav></header>
+  <main>
+    <article>
+      <h1 data-expect="yes">Notes on WebAssembly threads</h1>
+      <p class="date" data-expect="any">2026-07-11 · 8 minute read</p>
+      <p data-expect="yes">I spent last weekend getting threads to work in a WebAssembly module. These are my notes, mostly for future me.</p>
+      <h2 data-expect="yes">The short version</h2>
+      <p data-expect="yes">You need shared memory, a special set of response headers, and a lot of patience.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref">1</a></sup></p>
+      <table>
+        <thead><tr><th data-expect="yes">Browser</th><th data-expect="yes">Works?</th><th data-expect="yes">Notes</th></tr></thead>
+        <tbody>
+          <tr><td data-expect="any">Chrome</td><td data-expect="yes">Yes</td><td data-expect="yes">Requires isolation headers</td></tr>
+          <tr><td data-expect="any">Safari</td><td data-expect="yes">Partly</td><td data-expect="yes">Only in recent versions</td></tr>
+        </tbody>
+      </table>
+      <div class="highlight"><pre tabindex="0"><code class="language-rust">use std::thread;
+fn main() { thread::spawn(|| println!("hi")); }</code></pre></div>
+      <p data-expect="yes">After that, everything mostly just worked.</p>
+      <div class="footnotes" role="doc-endnotes">
+        <hr>
+        <ol><li id="fn:1" data-expect="yes">The headers are needed for security reasons, not performance ones.&nbsp;<a href="#fnref:1" class="footnote-backref">↩︎</a></li></ol>
+      </div>
+      <ul class="tags"><li data-expect="any"><a href="#">wasm</a></li><li data-expect="any"><a href="#">rust</a></li></ul>
+    </article>
+    <nav class="post-nav"><a href="#">← Older post</a> <a href="#">Newer post →</a></nav>
+  </main>
+  <footer><p>© 2026 k.dev · Built with a static site generator</p></footer>
+</body>
+</html>

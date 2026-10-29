@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Pricing - Planboard</title></head>
+<body>
+  <header class="site-header"><a href="/">Planboard</a><nav><a href="#">Product</a><a href="#">Pricing</a><a href="#">Customers</a></nav><a class="button" href="#">Start free trial</a></header>
+  <main>
+    <section class="hero">
+      <h1 data-expect="yes">Simple pricing for teams of every size</h1>
+      <p data-expect="yes">Start free and upgrade when your team grows. No credit card required.</p>
+      <div class="billing-toggle" role="radiogroup"><button role="radio" aria-checked="true">Monthly</button><button role="radio">Yearly</button></div>
+    </section>
+    <section class="plans">
+      <div class="plan">
+        <h2 data-expect="yes">Starter</h2>
+        <p class="price" data-expect="any"><span class="amount">$0</span> per month</p>
+        <p data-expect="yes">For individuals trying things out.</p>
+        <a class="button" href="#">Get started</a>
+      </div>
+      <div class="plan featured">
+        <div class="ribbon" data-expect="any">Most popular</div>
+        <h2 data-expect="yes">Team</h2>
+        <p class="price" data-expect="any"><span class="amount">$12</span> per user per month</p>
+        <p data-expect="yes">For growing teams that need shared boards and reports.</p>
+        <a class="button" href="#">Start free trial</a>
+      </div>
+    </section>
+    <section class="compare">
+      <h2 data-expect="yes">Compare plans</h2>
+      <table>
+        <thead><tr><th></th><th data-expect="yes">Starter</th><th data-expect="yes">Team</th></tr></thead>
+        <tbody>
+          <tr><th data-expect="yes">Unlimited boards</th><td>✓</td><td>✓</td></tr>
+          <tr><th data-expect="yes">Guest access</th><td>—</td><td>✓</td></tr>
+          <tr><th data-expect="yes">File storage</th><td data-expect="any">1 GB</td><td data-expect="any">100 GB</td></tr>
+          <tr><th data-expect="yes">Support</th><td data-expect="yes">Community forum</td><td data-expect="yes">Email within one day</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+  <footer><p>Prices exclude local taxes.</p></footer>
+</body>
+</html>

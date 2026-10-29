@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>阅渡 · 双语对照翻译</title>
+  <link rel="stylesheet" href="lang-picker.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div class="brand"><strong>阅渡</strong> <span>Yuedu Translate</span></div>
+    <button id="open-options" class="icon" type="button" data-i18n-attr="title:popup.settings;aria-label:popup.settings">⚙</button>
+  </header>
+  <div id="account-bar" class="account-bar">
+    <span id="account-who" class="account-bar__who"></span>
+    <button id="account-action" class="account-bar__action" type="button"></button>
+  </div>
+  <p id="engine-banner" class="engine-banner"></p>
+
+  <section id="privacy" hidden>
+    <h2 data-i18n="privacy.title"></h2>
+    <p data-i18n="privacy.popup1"></p>
+    <p data-i18n="privacy.popup2"></p>
+    <button id="ack-privacy" class="primary" type="button" data-i18n="privacy.ack"></button>
+  </section>
+
+  <section id="main" hidden>
+    <label class="field">
+      <span class="field__label" data-i18n="label.engine"></span>
+      <select id="engine"></select>
+    </label>
+    <label class="field">
+      <span class="field__label" data-i18n="label.targetLang"></span>
+      <select id="target-lang"></select>
+    </label>
+    <p id="page-status" class="status" role="status"></p>
+    <div class="actions">
+      <div class="go-row">
+        <div class="mode-wrap">
+          <button id="display-mode" class="mode" type="button" data-mode="bilingual" aria-describedby="display-tip">
+            <svg class="ic-bilingual" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 10h10"/><path d="M4 15h16M4 19h10" opacity=".5"/></svg>
+            <svg class="ic-translation" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 12h16M4 16h10"/></svg>
+            <span class="mode-label"></span>
+          </button>
+          <span id="display-tip" class="tip" role="tooltip"></span>
+        </div>
+        <button id="start" class="primary" type="button" data-i18n="action.translate"></button>
+      </div>
+      <button id="stop" type="button" data-i18n="action.stop"></button>
+      <button id="restore" type="button" data-i18n="action.restore"></button>
+      <button id="retry" type="button" data-i18n="action.retry"></button>
+      <button id="tts" type="button" data-i18n="tts.read" hidden></button>
+    </div>
+    <button id="enable-all" class="wide" type="button" data-i18n="lookup.enableAll" hidden></button>
+  </section>
+
+  <footer>
+    <span data-i18n="footer.shortcuts"></span>
+    <a id="privacy-link" href="options.html#privacy" target="_blank" data-i18n="footer.privacy"></a>
+    <a id="home-link" target="_blank" rel="noreferrer" data-i18n="footer.home"></a>
+  </footer>
+  <script src="popup.js"></script>
+</body>
+</html>

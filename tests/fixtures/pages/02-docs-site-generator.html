@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Installation | Fluxor Docs</title></head>
+<body>
+  <nav class="navbar">
+    <div class="navbar__inner">
+      <a class="navbar__brand" href="/">Fluxor</a>
+      <a class="navbar__item" href="/docs">Docs</a>
+      <a class="navbar__item" href="/api">API</a>
+      <div class="navbar__item dropdown">Version 3.x</div>
+    </div>
+  </nav>
+  <div class="main-wrapper">
+    <aside class="theme-doc-sidebar-container">
+      <nav class="menu"><ul class="menu__list"><li class="menu__list-item"><a href="#">Introduction</a></li><li class="menu__list-item"><a href="#">Installation</a></li><li class="menu__list-item"><a href="#">Configuration</a></li></ul></nav>
+    </aside>
+    <main class="docMainContainer">
+      <article>
+        <div class="theme-doc-markdown markdown">
+          <header><h1 data-expect="yes">Installation</h1></header>
+          <p data-expect="yes">Fluxor runs on any modern JavaScript runtime. This page walks you through installing the command-line tool and creating your first project.</p>
+          <h2 data-expect="yes">Requirements</h2>
+          <ul>
+            <li data-expect="yes">Node.js version 20 or above</li>
+            <li data-expect="yes">A terminal with access to your project folder</li>
+          </ul>
+          <div class="theme-admonition alert alert--info">
+            <div class="admonition-heading" data-expect="any">Tip</div>
+            <div class="admonition-content"><p data-expect="yes">You can try Fluxor online without installing anything by opening the interactive playground.</p></div>
+          </div>
+          <h2 data-expect="yes">Install the CLI</h2>
+          <div class="tabs-container">
+            <ul role="tablist" class="tabs"><li role="tab" aria-selected="true">npm</li><li role="tab">pnpm</li><li role="tab">yarn</li></ul>
+            <div role="tabpanel"><pre><code>npm install --global fluxor</code></pre></div>
+          </div>
+          <p data-expect="yes">After the installation finishes, check that everything works by printing the version number.</p>
+          <details>
+            <summary data-expect="yes">Installation fails with a permission error</summary>
+            <p data-expect="yes">Avoid running the installer as an administrator. Configure your package manager to use a folder inside your home directory instead.</p>
+          </details>
+        </div>
+        <nav class="pagination-nav" aria-label="Docs pages">
+          <a class="pagination-nav__link" href="#"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Introduction</div></a>
+          <a class="pagination-nav__link" href="#"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Configuration</div></a>
+        </nav>
+      </article>
+      <div class="col col--3">
+        <div class="table-of-contents-wrapper toc">
+          <ul class="table-of-contents"><li><a href="#">Requirements</a></li><li><a href="#">Install the CLI</a></li></ul>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="footer"><div class="footer__copyright">Copyright 2026 Fluxor contributors.</div></footer>
+</body>
+</html>

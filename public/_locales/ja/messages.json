@@ -1,0 +1,17 @@
+{
+  "extName": {
+    "message": "Yuedu Translate"
+  },
+  "extShortName": {
+    "message": "Yuedu"
+  },
+  "extDescription": {
+    "message": "原文はそのまま、理解はすぐそばに。Yueduは各段落の下に訳文を表示し、記事や論文も一文ずつ見比べながら読めます。単語の意味を調べたり、単語帳で復習したり、動画は二言語字幕で視聴可能。ログインなしで試せます。"
+  },
+  "actionTitle": {
+    "message": "Yuedu：原文と訳文を並べて読む"
+  },
+  "commandToggle": {
+    "message": "このページを翻訳 / 原文を表示"
+  }
+}

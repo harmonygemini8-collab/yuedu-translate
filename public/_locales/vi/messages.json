@@ -1,0 +1,17 @@
+{
+  "extName": {
+    "message": "Yuedu Translate"
+  },
+  "extShortName": {
+    "message": "Yuedu"
+  },
+  "extDescription": {
+    "message": "Bản gốc luôn trong mắt, hiểu ngay trong tầm tay. Yuedu đặt bản dịch dưới mỗi đoạn văn để bạn đối chiếu từng câu khi đọc bài viết hay tài liệu; tra từ khi bôi đen, ôn lại từ đã lưu, xem video với phụ đề song ngữ. Dùng thử không cần đăng nhập."
+  },
+  "actionTitle": {
+    "message": "Yuedu: dịch trang web song ngữ"
+  },
+  "commandToggle": {
+    "message": "Dịch trang / Hiện bản gốc"
+  }
+}

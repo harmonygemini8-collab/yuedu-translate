@@ -1,0 +1,79 @@
+/* Searchable language picker, shared by the popup and the options page. */
+/* Block, not inline-block: the control fills its field like the engine picker beside it. */
+.lang-picker { position: relative; display: block; width: 100%; min-width: 0; }
+
+.lang-picker-button {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: start;
+  padding: 5px 8px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lang-picker-panel {
+  position: absolute;
+  /* Pinned to both edges of the field so the panel can never hang off the popup. */
+  inset-inline: 0;
+  top: calc(100% + 4px);
+  z-index: 20;
+  max-height: 280px;
+  display: flex;
+  flex-direction: column;
+  /* Canvas follows the page's color-scheme, so the panel is readable in dark mode too. */
+  background: Canvas;
+  color: CanvasText;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+}
+
+.lang-picker-search {
+  margin: 8px 8px 4px;
+  padding: 6px 9px;
+  font: inherit;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+}
+
+.lang-picker-list { overflow-y: auto; padding: 2px 6px 8px; }
+
+.lang-picker-group {
+  margin: 8px 4px 2px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.lang-picker-group:first-child { margin-top: 2px; }
+
+.lang-picker-option {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: start;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lang-picker-option:hover:not(:disabled),
+.lang-picker-option.active { background: rgb(128 128 128 / 18%); }
+.lang-picker-option[aria-selected='true'] { font-weight: 600; color: var(--accent); }
+.lang-picker-option:disabled { opacity: 0.4; cursor: default; }
+.lang-picker-empty { margin: 0 0 10px; padding: 0 10px; color: var(--muted); font-size: 12px; }
+
+/* Open upward when there is not enough space below (set by JS). */
+.lang-picker-panel--above {
+  top: auto;
+  bottom: calc(100% + 4px);
+}

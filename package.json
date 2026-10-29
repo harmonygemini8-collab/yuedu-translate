@@ -1,0 +1,36 @@
+{
+  "name": "yuedu-translate",
+  "version": "0.4.01",
+  "firefoxVersion": "0.4.01",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "description": "阅渡 · 双语对照翻译 — Yuedu Translate, a bilingual web reading Chrome/Firefox extension (open-core: translation pipeline, extraction and engine adapters)",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "build:ext": "node scripts/build.mjs",
+    "build:ext:local": "node scripts/build.mjs --api=http://127.0.0.1:8787",
+    "release": "node scripts/build.mjs --public",
+    "icons": "node scripts/generate-icons.mjs",
+    "preview": "node scripts/serve.mjs",
+    "dev": "node scripts/build.mjs --watch --api=http://127.0.0.1:8787",
+    "firefox": "node scripts/build.mjs --public --firefox",
+    "firefox:source": "node scripts/firefox-source.mjs",
+    "firefox:verify": "node scripts/firefox-verify.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "eval:extraction": "vitest run tests/extraction-benchmark.test.ts",
+    "check": "npm run typecheck && npm test && npm run build:ext"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.2.9",
+    "@types/node": "24.13.5",
+    "esbuild": "0.28.2",
+    "jsdom": "30.0.1",
+    "typescript": "5.9.3",
+    "vitest": "5.0.1"
+  }
+}

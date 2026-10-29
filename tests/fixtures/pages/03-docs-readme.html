@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>tiny-queue: README</title></head>
+<body>
+  <header class="AppHeader" role="banner">
+    <a href="/">Home</a>
+    <nav aria-label="Global"><a href="#">Pull requests</a><a href="#">Issues</a></nav>
+  </header>
+  <div class="repository-content">
+    <div class="file-navigation"><span class="branch">main</span><a href="#">Go to file</a><button>Code</button></div>
+    <div class="Box-header"><h2 data-expect="any">README.md</h2></div>
+    <article class="markdown-body entry-content">
+      <h1 data-expect="yes"><a class="anchor" aria-hidden="true" href="#tiny-queue"><svg width="16" height="16"></svg></a>tiny-queue</h1>
+      <p data-expect="yes">A small promise queue that limits how many async tasks run at the same time. It has no dependencies and works in browsers and servers.</p>
+      <p><a href="#"><img alt="build status" src="data:,"></a> <a href="#"><img alt="npm version" src="data:,"></a></p>
+      <h2 data-expect="yes">Features</h2>
+      <ul>
+        <li data-expect="yes">Configurable concurrency with a single option</li>
+        <li data-expect="yes">Pause and resume the queue at any time</li>
+        <li data-expect="yes">Written in TypeScript with full type definitions</li>
+      </ul>
+      <h2 data-expect="yes">Usage</h2>
+      <pre><code>import { Queue } from 'tiny-queue';
+const queue = new Queue({ concurrency: 2 });</code></pre>
+      <h2 data-expect="yes">Roadmap</h2>
+      <ul class="contains-task-list">
+        <li class="task-list-item" data-expect="yes"><input type="checkbox" disabled checked> Priority levels for tasks</li>
+        <li class="task-list-item" data-expect="yes"><input type="checkbox" disabled> Persist the queue between restarts</li>
+      </ul>
+      <h2 data-expect="yes">Options</h2>
+      <table>
+        <thead><tr><th data-expect="yes">Option</th><th data-expect="yes">Default</th><th data-expect="yes">Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>concurrency</code></td><td>1</td><td data-expect="yes">Maximum number of tasks running together</td></tr>
+          <tr><td><code>autoStart</code></td><td><code>true</code></td><td data-expect="yes">Start processing as soon as a task is added</td></tr>
+        </tbody>
+      </table>
+      <h2 data-expect="yes">License</h2>
+      <p data-expect="yes">Released under the MIT license.</p>
+    </article>
+  </div>
+  <footer class="footer"><ul><li><a href="#">Terms</a></li><li><a href="#">Privacy</a></li><li><a href="#">Status</a></li></ul></footer>
+</body>
+</html>

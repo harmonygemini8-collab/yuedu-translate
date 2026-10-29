@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Project overview · Taskline</title></head>
+<body>
+  <div id="root">
+    <div class="app">
+      <div class="app-sidebar sidebar" role="navigation">
+        <div class="workspace-name">Acme Inc</div>
+        <div class="nav-item active"><span class="icon" aria-hidden="true">●</span><span>Projects</span></div>
+        <div class="nav-item"><span class="icon" aria-hidden="true">●</span><span>Inbox</span></div>
+      </div>
+      <div class="app-main" role="main">
+        <div class="toolbar" role="toolbar"><div role="button" tabindex="0">New task</div><div role="button" tabindex="0">Filter</div></div>
+        <div class="page-title" data-expect="yes">Website redesign</div>
+        <div class="page-description" data-expect="yes">Refresh the marketing site with the new brand colors and a simpler navigation.</div>
+        <div class="task-list">
+          <div class="task-row">
+            <input type="checkbox" aria-label="Complete task">
+            <div class="task-title" data-expect="yes"><span>Write copy for the landing page</span></div>
+            <div class="task-meta" data-expect="any"><span class="assignee">Kim</span> <span class="due">Due Friday</span></div>
+          </div>
+          <div class="task-row">
+            <input type="checkbox" aria-label="Complete task">
+            <div class="task-title" data-expect="yes"><span>Choose photos for the team page</span></div>
+            <div class="task-meta" data-expect="any"><span class="assignee">Luis</span> <span class="due">Due Monday</span></div>
+          </div>
+        </div>
+        <div class="empty-hint" data-expect="yes">Tasks you complete will move to the archive automatically.</div>
+        <div class="activity">
+          <div class="activity-heading" data-expect="yes">Recent activity</div>
+          <div class="activity-item" data-expect="yes"><b>Kim</b> moved <i>Write copy for the landing page</i> to In progress</div>
+        </div>
+      </div>
+      <div class="toast" role="status" aria-live="polite" hidden>Saved</div>
+      <div class="modal" aria-hidden="true"><div class="modal-body">Are you sure you want to delete this project?</div></div>
+    </div>
+  </div>
+</body>
+</html>

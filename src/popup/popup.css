@@ -1,0 +1,132 @@
+:root {
+  color-scheme: light dark;
+  --accent: #2f6f5e;
+  --accent-hover: #285f50;
+  --accent-ink: #1f5245;
+  --accent-tint: #e7f3ef;
+  --accent-tint-hover: #d6eae3;
+  --ink: #1f2937;
+  --error: #b42318;
+  --warn-bg: #fff4d6;
+  --warn-ink: #7a5a00;
+  --muted: #6b7280;
+  --border: #d9dde3;
+}
+body {
+  width: 300px;
+  margin: 0;
+  font: 13px/1.5 system-ui, "Microsoft YaHei", sans-serif;
+  overflow: hidden;
+}
+header, footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+}
+header { border-bottom: 1px solid var(--border); }
+.brand strong { font-size: 16px; color: var(--accent); }
+.brand span { color: var(--muted); font-size: 12px; }
+.engine-banner {
+  margin: 0;
+  padding: 6px 14px;
+  font-size: 12px;
+  background: var(--accent-tint);
+  color: var(--accent-ink);
+}
+.engine-banner[data-kind="warn"] { background: var(--warn-bg); color: var(--warn-ink); }
+.lang + .lang { margin-top: 8px; }
+section { padding: 12px 14px; }
+section h2 { font-size: 14px; margin: 0 0 6px; }
+section p { margin: 0 0 8px; color: var(--muted); }
+/*
+ * Label above, control at full width. The controls used to sit on the same row as their label,
+ * capped at 62% so a long label (Malay, Arabic) could not push them off the edge — which left
+ * every control a different width and, in a 300px popup, too narrow to read a language name in.
+ */
+.field { display: block; }
+.field + .field { margin-top: 10px; }
+.field__label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 12px; }
+.field select { width: 100%; box-sizing: border-box; }
+
+/* Account state belongs where the reader looks first, not behind the settings page. */
+.account-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.account-bar__who {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: 12px;
+}
+.account-bar__who[data-plan="pro"] { color: var(--accent); font-weight: 600; }
+.account-bar__action {
+  flex: none;
+  padding: 3px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.engine-banner[data-kind="mock"] { display: none; }
+.status { min-height: 40px; margin: 10px 0; color: inherit; }
+.status.error { color: var(--error); }
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.go-row { grid-column: 1 / -1; display: flex; gap: 8px; }
+.go-row .primary { flex: 1; }
+.mode-wrap { position: relative; display: flex; }
+.mode {
+  display: grid; place-items: center; width: 40px; padding: 0;
+  border-color: var(--accent); background: var(--accent-tint); color: var(--accent);
+  transition: background 0.15s, color 0.15s;
+}
+.mode:hover { background: var(--accent-tint-hover); }
+.mode[data-mode="translation"] { background: var(--accent); color: #fff; }
+.mode[data-mode="translation"]:hover { background: var(--accent-hover); }
+.mode[data-mode="bilingual"] .ic-translation, .mode[data-mode="translation"] .ic-bilingual { display: none; }
+/* Names the current state and what a click does, like a switch's own caption. */
+.tip {
+  position: absolute; left: 0; bottom: calc(100% + 8px); z-index: 10; width: max-content; max-width: 220px;
+  padding: 6px 10px; border-radius: 6px; background: var(--ink); color: #fff; font-size: 12px; line-height: 1.5;
+  pointer-events: none; opacity: 0; transform: translateY(2px); transition: opacity 0.12s, transform 0.12s;
+}
+.tip::after {
+  content: ""; position: absolute; left: 14px; top: 100%;
+  border: 5px solid transparent; border-top-color: var(--ink);
+}
+.mode:hover + .tip, .mode:focus-visible + .tip { opacity: 1; transform: none; }
+.mode-label { display: none; font-size: 12px; white-space: nowrap; }
+/* No hover on a touch screen, so the tooltip never shows: the switch carries its state as text instead. */
+@media (hover: none) {
+  .mode { width: auto; min-width: 40px; padding: 0 10px; display: flex; align-items: center; gap: 6px; }
+  .mode-label { display: inline; }
+  .tip { display: none; }
+}
+#enable-all { margin-top: 8px; width: 100%; border-color: var(--accent); color: var(--accent); }
+.actions .primary { grid-column: 1 / -1; }
+button, select {
+  font: inherit;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+button:disabled { opacity: 0.45; cursor: default; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.icon { border: 0; font-size: 16px; padding: 2px 6px; }
+footer { border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; flex-wrap: wrap; gap: 4px 10px; }
+footer a { color: var(--accent); }
+[hidden] { display: none !important; }
+/* Firefox for Android shows the popup as a full-width page rather than a 300 px box. */
+@media (pointer: coarse) {
+  body { width: auto; min-width: 300px; max-width: 520px; margin: 0 auto; }
+}

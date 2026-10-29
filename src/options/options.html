@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title data-i18n="options.title">阅渡 · 设置</title>
+  <link rel="stylesheet" href="lang-picker.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="layout">
+
+    <!-- ── Sidebar ── -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img src="/icons/icon-48.png" alt="" width="28" height="28">
+        <span>阅渡</span>
+      </div>
+      <p class="mock-banner" data-i18n="options.devBanner"></p>
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <button class="nav-item active" data-section="basic" type="button">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l3 3"/></svg>
+          <span data-i18n="nav.basic">基本设置</span>
+        </button>
+        <button class="nav-item" data-section="style" type="button">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h12v12H4z"/><path d="M4 9h12M9 4v12"/></svg>
+          <span data-i18n="nav.style">翻译样式</span>
+        </button>
+        <button class="nav-item" data-section="sites" type="button">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="8"/><path d="M2 10h16M10 2c-2.5 3-2.5 13 0 16M10 2c2.5 3 2.5 13 0 16"/></svg>
+          <span data-i18n="nav.sites">站点管理</span>
+        </button>
+        <button class="nav-item" data-section="vocab" type="button">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3h9a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3V3z"/><path d="M7 7h6M7 10h6"/></svg>
+          <span data-i18n="nav.vocab"></span>
+        </button>
+        <button class="nav-item" data-section="account" type="button" id="nav-account" hidden>
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="8" r="3.5"/><path d="M3 17c0-3.87 3.13-7 7-7s7 3.13 7 7"/></svg>
+          <span data-i18n="nav.account">账号</span>
+        </button>
+        <button class="nav-item" data-section="about" type="button">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="8"/><path d="M10 9v5M10 7v.01"/></svg>
+          <span data-i18n="nav.about">关于</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- ── Content ── -->
+    <main class="content">
+
+      <!-- basic -->
+      <section id="sec-basic" class="settings-section">
+        <h2 data-i18n="nav.basic">基本设置</h2>
+        <form id="settings">
+          <div class="field-group">
+            <label><span data-i18n="label.engine"></span>
+              <select name="engine"></select>
+            </label>
+            <p id="engine-hint" class="hint"></p>
+          </div>
+          <div class="field-group">
+            <label><span data-i18n="label.targetLang"></span>
+              <select name="targetLang"></select>
+            </label>
+          </div>
+          <div class="field-group">
+            <label><span data-i18n="label.uiLang"></span>
+              <select name="uiLang"></select>
+            </label>
+          </div>
+          <div class="field-group">
+            <label><span data-i18n="float.setting"></span>
+              <select name="floatingButton">
+                <option value="auto" data-i18n="float.auto"></option>
+                <option value="on" data-i18n="float.on"></option>
+                <option value="off" data-i18n="float.off"></option>
+              </select>
+            </label>
+          </div>
+          <div class="field-group">
+            <label><input name="engineFallback" type="checkbox"> <span data-i18n="fallback.enable"></span></label>
+            <p class="hint" data-i18n="fallback.hint"></p>
+          </div>
+          <div class="field-group">
+            <label><input name="translationCache" type="checkbox"> <span data-i18n="cache.enable"></span></label>
+            <p class="hint" data-i18n="cache.hint"></p>
+            <p><button id="cache-clear" type="button" data-i18n="cache.clear"></button> <span id="cache-status" role="status"></span></p>
+          </div>
+          <div class="field-group">
+            <h3 data-i18n="tier.own"></h3>
+            <p class="hint" data-i18n="hint.custom"></p>
+            <label><span data-i18n="custom.baseUrl"></span>
+              <input name="customBaseUrl" type="url" placeholder="https://api.openai.com/v1" spellcheck="false" size="40">
+            </label>
+            <label><span data-i18n="custom.model"></span>
+              <input name="customModel" type="text" placeholder="gpt-4o-mini" spellcheck="false" size="24">
+            </label>
+            <label><span data-i18n="custom.key"></span>
+              <input name="customKey" type="password" autocomplete="off" spellcheck="false" size="40">
+            </label>
+            <p><button id="custom-test" type="button" data-i18n="custom.test"></button> <span id="custom-status" role="status"></span></p>
+          </div>
+          <div class="field-group">
+            <label><span data-i18n="input.setting"></span>
+              <select name="inputTranslate">
+                <option value="off" data-i18n="input.off"></option>
+                <option value="spaces" data-i18n="input.spaces"></option>
+                <option value="key" data-i18n="input.key"></option>
+                <option value="both" data-i18n="input.both"></option>
+              </select>
+            </label>
+            <label><span data-i18n="input.lang"></span>
+              <select name="inputLang"></select>
+            </label>
+            <p class="hint" data-i18n="input.hint"></p>
+            <p id="input-tip" class="hint" hidden><strong data-i18n="input.tip"></strong></p>
+          </div>
+          <div class="field-group">
+            <label><input name="selectionLookup" type="checkbox"> <span data-i18n="selection.enable"></span></label>
+            <p class="hint" data-i18n="selection.hint"></p>
+            <p id="lookup-scope" class="hint" hidden><span data-i18n="lookup.needsAll"></span> <button id="lookup-enable-all" type="button" data-i18n="lookup.enableAll"></button></p>
+          </div>
+          <div id="debug-row" class="field-group">
+            <label><input name="debugReading" type="checkbox"> <span data-i18n="debug.reading"></span></label>
+          </div>
+          <div id="connection" class="field-group" hidden>
+            <h3 data-i18n="section.connection"></h3>
+            <p class="hint" data-i18n="connection.hint"></p>
+            <label><span data-i18n="connection.token"></span>
+              <input name="apiToken" type="password" autocomplete="off" spellcheck="false" size="40">
+            </label>
+            <p><button id="test-connection" type="button" data-i18n="connection.test"></button>
+               <span id="connection-status" role="status"></span></p>
+          </div>
+        </form>
+      </section>
+
+      <!-- style -->
+      <section id="sec-style" class="settings-section" hidden>
+        <h2 data-i18n="nav.style">翻译样式</h2>
+        <form id="settings-style">
+          <div class="field-group">
+            <label><span data-i18n="style.fontScale"></span>
+              <input form="settings" name="fontScale" type="range" min="0.7" max="1.3" step="0.05">
+              <output data-for="fontScale"></output>
+            </label>
+          </div>
+          <div class="field-group">
+            <label><span data-i18n="style.gap"></span>
+              <input form="settings" name="gap" type="range" min="0" max="24" step="1">
+              <output data-for="gap"></output>
+            </label>
+          </div>
+          <div class="field-group">
+            <label><input form="settings" name="followColor" type="checkbox"> <span data-i18n="style.followColor"></span></label>
+          </div>
+          <div class="field-group">
+            <label><span data-i18n="style.color"></span>
+              <input form="settings" name="color" type="color">
+            </label>
+          </div>
+          <div class="field-group">
+            <label><input form="settings" name="showBorder" type="checkbox"> <span data-i18n="style.border"></span></label>
+          </div>
+          <div class="field-group">
+            <label><span data-i18n="style.subtitleColor"></span>
+              <input form="settings" name="subtitleColor" type="color">
+            </label>
+            <label><span data-i18n="style.subtitleBackground"></span>
+              <input form="settings" name="subtitleBackground" type="color">
+            </label>
+          </div>
+          <div class="preview">
+            <p>Bilingual reading keeps the original text next to its translation.</p>
+            <span class="yilin-translation-preview">双语阅读让原文和译文相邻显示。</span>
+          </div>
+        </form>
+      </section>
+
+      <!-- sites -->
+      <section id="sec-sites" class="settings-section" hidden>
+        <h2 data-i18n="nav.sites">站点管理</h2>
+        <div class="field-group">
+          <h3 data-i18n="section.sites"></h3>
+          <label class="block"><span data-i18n="sites.hint"></span>
+            <textarea form="settings" name="disabledSites" rows="4" placeholder="example.com"></textarea>
+          </label>
+        </div>
+        <div class="field-group">
+          <h3 data-i18n="section.auto"></h3>
+          <p>
+            <label><input id="all-sites" type="checkbox"> <span data-i18n="auto.allSites"></span></label>
+          </p>
+          <p class="hint" data-i18n="auto.allSitesHint"></p>
+          <p class="hint" data-i18n="auto.hint"></p>
+          <p>
+            <input id="auto-host" type="text" placeholder="example.com" size="24">
+            <button id="auto-add" type="button" data-i18n="auto.add"></button>
+          </p>
+          <ul id="auto-list"></ul>
+          <p id="auto-status" class="hint" role="status"></p>
+        </div>
+      </section>
+
+      <!-- word book -->
+      <section id="sec-vocab" class="settings-section" hidden>
+        <h2 data-i18n="nav.vocab"></h2>
+        <p class="hint" data-i18n="vocab.hint"></p>
+
+        <div id="vocab-review-bar" class="field-group" hidden>
+          <span id="vocab-due-count"></span>
+          <button id="vocab-review-start" type="button" data-i18n="vocab.review"></button>
+        </div>
+
+        <div id="vocab-review-card" class="vocab-review-card" hidden>
+          <div id="vocab-review-front"></div>
+          <button id="vocab-review-reveal" type="button" data-i18n="vocab.reveal"></button>
+          <div id="vocab-review-back" hidden></div>
+          <div id="vocab-review-grades" hidden>
+            <button id="vocab-grade-again" type="button" data-i18n="vocab.grade.again"></button>
+            <button id="vocab-grade-good" type="button" data-i18n="vocab.grade.good"></button>
+          </div>
+          <p id="vocab-review-progress" class="hint"></p>
+        </div>
+
+        <p>
+          <input id="vocab-search" type="search" size="24">
+          <button id="vocab-export" type="button" data-i18n="vocab.export"></button>
+          <button id="vocab-export-anki" type="button" data-i18n="vocab.exportAnki"></button>
+          <button id="vocab-clear" type="button" data-i18n="vocab.clear"></button>
+          <span id="vocab-count" class="hint" role="status"></span>
+        </p>
+        <ul id="vocab-list" class="vocab-list"></ul>
+        <p id="vocab-empty" class="hint" data-i18n="vocab.empty" hidden></p>
+      </section>
+
+      <!-- account -->
+      <section id="sec-account" class="settings-section" hidden>
+        <h2 data-i18n="nav.account">账号</h2>
+        <div id="account">
+          <div id="signed-out">
+            <p data-i18n="account.webLoginHint"></p>
+            <button id="acc-web-login" type="button" class="primary" data-i18n="account.webLogin"></button>
+            <p id="acc-poll-status" class="hint" role="status"></p>
+          </div>
+          <div id="signed-in" hidden>
+            <p><strong id="acc-user"></strong> · <span id="acc-plan"></span>
+               <button id="acc-logout" type="button" data-i18n="account.logout"></button></p>
+            <ul id="acc-quotas" class="quotas"></ul>
+            <p id="acc-trial" class="hint" data-i18n="account.vipTrial"></p>
+            <p><button id="acc-delete" type="button" data-i18n="account.delete"></button></p>
+          </div>
+          <p id="acc-status" class="hint" role="status"></p>
+        </div>
+      </section>
+
+      <!-- about -->
+      <section id="sec-about" class="settings-section" hidden>
+        <h2 data-i18n="section.about">关于</h2>
+        <ul class="about-list">
+          <li><span data-i18n="about.version"></span> <span id="about-version"></span></li>
+          <li><span data-i18n="about.homepage"></span> <a id="about-home" target="_blank" rel="noreferrer"></a></li>
+          <li><span data-i18n="about.contact"></span> <a id="about-mail"></a></li>
+        </ul>
+        <div class="field-group">
+          <h3 data-i18n="section.data"></h3>
+          <p class="hint" data-i18n="data.desc"></p>
+          <button id="reset" type="button" data-i18n="data.reset"></button>
+        </div>
+        <div id="ack-row" class="field-group" hidden>
+          <p><button id="ack" class="primary" type="button" data-i18n="privacy.ackStart"></button></p>
+        </div>
+        <div class="field-group">
+          <h3 data-i18n="section.privacy"></h3>
+          <ul>
+            <li data-i18n="privacy.item1"></li>
+            <li data-i18n="privacy.item2"></li>
+            <li data-i18n="privacy.item3"></li>
+            <li data-i18n="privacy.item4"></li>
+            <li data-i18n="privacy.item5"></li>
+            <li data-i18n="privacy.item6"></li>
+            <li data-i18n="privacy.item7"></li>
+            <li data-i18n="privacy.item8"></li>
+            <li data-i18n="privacy.item9"></li>
+            <li data-i18n="privacy.item10"></li>
+            <li data-i18n="privacy.item11"></li>
+            <li data-i18n="privacy.item12"></li>
+            <li data-i18n="privacy.item13"></li>
+            <li data-i18n="privacy.item14"></li>
+            <li data-i18n="privacy.item15"></li>
+          </ul>
+        </div>
+      </section>
+
+      <p id="saved" role="status"></p>
+    </main>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

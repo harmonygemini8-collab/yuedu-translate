@@ -1,0 +1,16 @@
+<!-- 阅渡 Yuedu Translate icon (vector source). Keep in sync with scripts/generate-icons.mjs. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#14b8a6"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <!-- original text -->
+  <rect x="24" y="30" width="80" height="22" rx="11" fill="#ffffff"/>
+  <rect x="24" y="60" width="58" height="14" rx="7" fill="#ffffff" fill-opacity="0.8"/>
+  <!-- translation next to the original: accent line + translated line -->
+  <rect x="24" y="84" width="10" height="22" rx="5" fill="#fcd34d"/>
+  <rect x="42" y="84" width="62" height="22" rx="11" fill="#fcd34d"/>
+</svg>

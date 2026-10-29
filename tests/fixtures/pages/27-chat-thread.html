@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>#design-team · Chat</title></head>
+<body>
+  <div class="client">
+    <nav class="channel-sidebar"><div class="channel">#general</div><div class="channel">#design-team</div><div class="channel">#random</div></nav>
+    <main class="conversation" role="main">
+      <div class="channel-header" data-expect="any"><span class="channel-name">#design-team</span> <span class="topic">Weekly design reviews and feedback</span></div>
+      <div class="message-list" role="list">
+        <div class="date-divider" data-expect="any">Today</div>
+        <div class="message" role="listitem">
+          <div class="message-header" data-expect="any"><span class="author">Nadia</span> <span class="time">9:14 AM</span></div>
+          <div class="message-body" data-expect="yes">Morning! I uploaded the new onboarding screens. Could everyone take a look before lunch?</div>
+          <div class="reactions"><button>👍 3</button><button>👀 1</button></div>
+        </div>
+        <div class="message" role="listitem">
+          <div class="message-header" data-expect="any"><span class="author">Ben</span> <span class="time">9:20 AM</span></div>
+          <div class="message-body" data-expect="yes">Looks great. The second screen feels a bit crowded, maybe we can drop the illustration?</div>
+          <div class="thread-summary" data-expect="any"><a href="#">2 replies</a></div>
+        </div>
+        <div class="message" role="listitem">
+          <div class="message-header" data-expect="any"><span class="author">Nadia</span> <span class="time">9:22 AM</span></div>
+          <div class="message-body">
+            <p data-expect="yes">Good point. Here is the checklist I used:</p>
+            <ul><li data-expect="yes">Keep one primary action per screen</li><li data-expect="yes">Use short, friendly sentences</li></ul>
+          </div>
+        </div>
+      </div>
+      <div class="composer"><div class="composer-input" contenteditable="true" role="textbox"><p>Message #design-team</p></div><button>Send</button></div>
+    </main>
+  </div>
+</body>
+</html>

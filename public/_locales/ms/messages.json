@@ -1,0 +1,17 @@
+{
+  "extName": {
+    "message": "Yuedu Translate"
+  },
+  "extShortName": {
+    "message": "Yuedu"
+  },
+  "extDescription": {
+    "message": "Teks asal kekal di hadapan mata, kefahaman sentiasa dekat. Yuedu meletakkan terjemahan di bawah setiap perenggan supaya anda boleh membanding ayat demi ayat semasa membaca artikel atau rujukan; cari makna perkataan, ulang kaji perbendaharaan kata, dan tonton video dengan sari kata dwibahasa. Boleh dicuba tanpa log masuk."
+  },
+  "actionTitle": {
+    "message": "Yuedu: terjemahan web dwibahasa"
+  },
+  "commandToggle": {
+    "message": "Terjemah halaman / Tunjuk asal"
+  }
+}

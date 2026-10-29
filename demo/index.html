@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yuedu Demo · Reading the Web in Two Languages</title>
+  <link rel="stylesheet" href="/demo.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="/">Home</a>
+    <a href="#guide">Guide</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+
+  <main>
+    <article>
+      <h1>Reading the Web in Two Languages</h1>
+      <p class="meta">A sample article for testing bilingual translation.</p>
+
+      <p>Bilingual reading keeps the original text on the page and places the translation right next to it, so you can always check what the author actually wrote.</p>
+      <p>This page is a local test fixture for <a href="#guide">Yuedu Translate</a>. It contains headings, links, lists, tables, code blocks and dynamic content.</p>
+
+      <h2 id="guide">Why keep the original text?</h2>
+      <p>Machine translation is fast, but it can miss nuance, numbers and negation. Seeing both versions together makes these mistakes easy to spot.</p>
+      <blockquote>
+        <p>The best translation tool is the one that lets you stop needing it.</p>
+      </blockquote>
+
+      <h2>What gets translated</h2>
+      <ul>
+        <li>Headings and paragraphs in the main content area</li>
+        <li>List items, including nested lists
+          <ul>
+            <li>Each nested item is translated on its own</li>
+          </ul>
+        </li>
+        <li>Table cells and figure captions</li>
+      </ul>
+
+      <h2>What is skipped</h2>
+      <p>Code is never translated. Run <code>npm run build</code> and the command stays exactly as written.</p>
+      <pre><code>const greeting = "Hello, world";
+console.log(greeting);</code></pre>
+      <p>Text that is already in Chinese is skipped too:</p>
+      <p>这一段已经是中文，所以不会再被翻译。</p>
+      <p translate="no">Brand names marked as translate="no" stay untouched.</p>
+      <label>Search the docs <input type="text" value="input values are never read"></label>
+
+      <h2>Supported page types</h2>
+      <table>
+        <thead>
+          <tr><th>Page type</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Articles and blogs</td><td>Supported</td></tr>
+          <tr><td>Technical documentation</td><td>Supported</td></tr>
+          <tr><td>Built-in PDF viewer</td><td>Not supported yet</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Handling errors</h2>
+      <p>If a paragraph cannot be translated, a retry button appears below it without affecting the rest of the page.</p>
+
+      <h2>Long pages</h2>
+      <p>Only paragraphs near the visible area are translated first. Scroll down to see the rest of the page being translated on demand.</p>
+      <div class="spacer"></div>
+      <p>This paragraph sits far below the first screen and is translated only when you scroll close to it.</p>
+
+      <h2 id="faq">Dynamic content</h2>
+      <div id="feed">
+        <p>New content that appears after translation starts is detected automatically.</p>
+      </div>
+      <button id="load-more" type="button">Load more</button>
+    </article>
+  </main>
+
+  <footer>Demo footer · not translated</footer>
+
+  <script>
+    const extra = [
+      'This paragraph was loaded after you clicked the button.',
+      'Infinite scrolling pages work the same way: new paragraphs join the translation queue.',
+    ];
+    let index = 0;
+    document.getElementById('load-more').addEventListener('click', () => {
+      const p = document.createElement('p');
+      p.textContent = extra[index % extra.length];
+      index++;
+      document.getElementById('feed').append(p);
+    });
+  </script>
+</body>
+</html>

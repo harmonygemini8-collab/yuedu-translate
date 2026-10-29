@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Array.prototype.flat() - Web reference</title></head>
+<body>
+  <a class="skip-link" href="#content">Skip to main content</a>
+  <header class="site-header">
+    <a class="logo" href="/">WebRef</a>
+    <nav class="main-nav"><ul><li><a href="/docs">References</a></li><li><a href="/guides">Guides</a></li><li><a href="/blog">Blog</a></li></ul></nav>
+    <form role="search"><input type="search" placeholder="Search"><button>Search</button></form>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <p class="sidebar-heading">Standard built-in objects</p>
+      <ol><li><a href="#">Array</a></li><li><a href="#">Array.prototype.at()</a></li><li><a href="#">Array.prototype.concat()</a></li></ol>
+    </aside>
+    <main id="content">
+      <nav class="breadcrumbs"><ol><li><a href="#">References</a></li><li><a href="#">JavaScript</a></li><li>Array</li></ol></nav>
+      <article>
+        <h1 data-expect="any">Array.prototype.flat()</h1>
+        <p data-expect="yes">The <code>flat()</code> method of Array instances creates a new array with all sub-array elements concatenated into it recursively up to the specified depth.</p>
+        <h2 data-expect="yes">Try it</h2>
+        <pre><code>const arr = [0, 1, [2, [3, [4, 5]]]];
+console.log(arr.flat());</code></pre>
+        <h2 data-expect="yes">Syntax</h2>
+        <pre><code>flat()
+flat(depth)</code></pre>
+        <h3 data-expect="yes">Parameters</h3>
+        <dl>
+          <dt data-expect="any"><code>depth</code> <span class="badge">Optional</span></dt>
+          <dd data-expect="yes">The depth level specifying how deep a nested array structure should be flattened. Defaults to 1.</dd>
+        </dl>
+        <div class="notecard note">
+          <p data-expect="yes"><strong>Note:</strong> The flat method removes empty slots in arrays, but keeps other falsy values.</p>
+        </div>
+        <h2 data-expect="yes">Browser compatibility</h2>
+        <table>
+          <thead><tr><th data-expect="yes">Feature</th><th data-expect="any">Chrome</th><th data-expect="any">Firefox</th></tr></thead>
+          <tbody><tr><td data-expect="any">flat()</td><td>69</td><td>62</td></tr></tbody>
+        </table>
+        <h2 data-expect="yes">See also</h2>
+        <ul>
+          <li data-expect="yes"><a href="#">Indexed collections guide</a></li>
+          <li data-expect="any"><a href="#"><code>Array.prototype.flatMap()</code></a></li>
+        </ul>
+      </article>
+    </main>
+  </div>
+  <footer class="site-footer"><p>Content is available under a permissive license.</p><ul><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul></footer>
+</body>
+</html>

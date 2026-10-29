@@ -1,0 +1,17 @@
+{
+  "extName": {
+    "message": "Yuedu Translate"
+  },
+  "extShortName": {
+    "message": "Yuedu"
+  },
+  "extDescription": {
+    "message": "The original stays in view, understanding stays close. Yuedu puts the translation under every paragraph so you can check articles and papers line by line; look up words, review your vocabulary, and watch videos with bilingual subtitles — no sign-in needed to try it."
+  },
+  "actionTitle": {
+    "message": "Yuedu: bilingual web translation"
+  },
+  "commandToggle": {
+    "message": "Translate page / Show original"
+  }
+}

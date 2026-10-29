@@ -1,0 +1,17 @@
+{
+  "extName": {
+    "message": "阅渡 · 双语对照翻译"
+  },
+  "extShortName": {
+    "message": "阅渡"
+  },
+  "extDescription": {
+    "message": "原文在眼前，理解在身边。阅渡把译文贴在每段原文下方，读文章、啃文献都能逐句对照；划词查词、生词复习、视频双语字幕一应俱全，无需登录即可试用。"
+  },
+  "actionTitle": {
+    "message": "阅渡 · 双语对照翻译"
+  },
+  "commandToggle": {
+    "message": "翻译此页 / 显示原文"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "extName": {
+    "message": "閱渡 · 雙語對照翻譯"
+  },
+  "extShortName": {
+    "message": "閱渡"
+  },
+  "extDescription": {
+    "message": "原文在眼前，理解在身邊。閱渡把譯文貼在每段原文下方，讀文章、啃文獻都能逐句對照；劃詞查詞、生詞複習、影片雙語字幕一應俱全，無需登入即可試用。"
+  },
+  "actionTitle": {
+    "message": "閱渡 · 雙語對照翻譯"
+  },
+  "commandToggle": {
+    "message": "翻譯此頁 / 顯示原文"
+  }
+}

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Monthly rainfall statistics</title></head>
+<body>
+  <header><nav><a href="/">Climate Data</a> <a href="#">Stations</a> <a href="#">Downloads</a></nav></header>
+  <main>
+    <h1 data-expect="yes">Monthly rainfall statistics</h1>
+    <p data-expect="yes">Average rainfall recorded at three coastal stations between 1991 and 2020.</p>
+    <table class="data-table">
+      <caption data-expect="yes">Rainfall in millimeters</caption>
+      <thead><tr><th data-expect="yes">Month</th><th data-expect="yes">North Point</th><th data-expect="yes">Harbor</th><th data-expect="yes">South Cape</th></tr></thead>
+      <tbody>
+        <tr><th data-expect="yes">January</th><td>78.4</td><td>91.2</td><td>64.0</td></tr>
+        <tr><th data-expect="yes">February</th><td>65.1</td><td>70.8</td><td>52.3</td></tr>
+        <tr><th data-expect="yes">March</th><td>59.7</td><td>66.5</td><td>48.9</td></tr>
+      </tbody>
+      <tfoot><tr><th data-expect="yes">Annual total</th><td>812</td><td>903</td><td>655</td></tr></tfoot>
+    </table>
+    <p class="source" data-expect="yes">Source: national weather service, quality-controlled records.</p>
+    <div class="pagination"><a href="#">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">Next</a></div>
+    <div class="download-links"><a href="#">CSV</a> · <a href="#">JSON</a> · <a href="#">Excel</a></div>
+  </main>
+  <footer><p>Open data license.</p></footer>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Configuring the build pipeline</title></head>
+<body>
+  <main>
+    <h1 data-expect="yes">Configuring the build pipeline</h1>
+    <p data-expect="yes">The pipeline reads its settings from a single file in the project root.</p>
+    <p><code>pipeline.config.json</code></p>
+    <p data-expect="yes">Set <code>outDir</code> to change where files are written, and <code>minify</code> to control compression.</p>
+    <pre class="shiki"><code><span class="line"><span style="color:#999">// pipeline.config.json</span></span>
+<span class="line"><span>{ "outDir": "dist", "minify": true }</span></span></code></pre>
+    <div class="code-block-wrapper">
+      <div class="code-block-title">pipeline.config.json</div>
+      <pre><code>{ "watch": false }</code></pre>
+      <button class="copy-button">Copy</button>
+    </div>
+    <h2 data-expect="yes">Environment variables</h2>
+    <table>
+      <thead><tr><th data-expect="yes">Variable</th><th data-expect="yes">Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>BUILD_TARGET</code></td><td data-expect="yes">Selects the platform to build for</td></tr>
+        <tr><td><code>CI</code></td><td data-expect="yes">Disables interactive prompts when set</td></tr>
+      </tbody>
+    </table>
+    <ul>
+      <li><code>--watch</code></li>
+      <li data-expect="yes"><code>--verbose</code> prints every step</li>
+    </ul>
+    <div class="terminal" translate="no"><div class="prompt">$ pipeline build --verbose</div><div class="output">Build finished in 2.1s</div></div>
+    <p data-expect="yes">Keyboard shortcut: press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> to run the default build.</p>
+    <p><kbd>Ctrl</kbd>+<kbd>C</kbd></p>
+    <math><mi>x</mi><mo>=</mo><mn>2</mn></math>
+    <p data-expect="yes">The formula above shows the default value used in examples.</p>
+  </main>
+</body>
+</html>

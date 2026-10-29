@@ -1,0 +1,9 @@
+node_modules/
+dist/
+dist-firefox/
+release/build/
+coverage/
+*.zip
+.env
+.env.*
+!.env.example

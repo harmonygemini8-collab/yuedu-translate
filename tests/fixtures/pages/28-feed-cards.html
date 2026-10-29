@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Home feed · Snapline</title></head>
+<body>
+  <header class="topnav"><a href="/">Snapline</a><nav><a href="#">Home</a><a href="#">Explore</a><a href="#">Notifications</a></nav></header>
+  <div class="feed-layout">
+    <main class="feed" aria-label="Timeline">
+      <article class="card">
+        <div class="card-header" data-expect="any"><a class="handle" href="#">@oceanlab</a> · <time>2h</time></div>
+        <div class="card-text" data-expect="yes">We just released a dataset of ten thousand ocean temperature readings. Free for research and teaching.</div>
+        <div class="card-actions"><button aria-label="Reply">14</button><button aria-label="Repost">52</button><button aria-label="Like">310</button></div>
+      </article>
+      <article class="card">
+        <div class="card-header" data-expect="any"><a class="handle" href="#">@cityplanner</a> · <time>5h</time></div>
+        <div class="card-text" data-expect="yes">Bike lanes on Main Street are finally protected. Ridership doubled in the first month.</div>
+        <a class="link-preview" href="#">
+          <div class="preview-title" data-expect="yes">Protected bike lanes and safer streets</div>
+          <div class="preview-domain">example.com</div>
+        </a>
+        <div class="card-actions"><button aria-label="Reply">3</button><button aria-label="Like">88</button></div>
+      </article>
+      <article class="card">
+        <div class="card-header" data-expect="any"><a class="handle" href="#">@bookclub</a> · <time>1d</time></div>
+        <div class="card-text" data-expect="yes">This month we are reading a novel about a lighthouse keeper. Who is joining?</div>
+      </article>
+      <div class="feed-loader" role="progressbar" aria-label="Loading more posts"></div>
+    </main>
+    <aside class="trends sidebar">
+      <h2>Trending</h2>
+      <ol><li><a href="#">Ocean data</a></li><li><a href="#">Bike lanes</a></li></ol>
+    </aside>
+  </div>
+</body>
+</html>

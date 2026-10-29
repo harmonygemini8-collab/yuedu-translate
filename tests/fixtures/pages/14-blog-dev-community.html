@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Stop using default exports - Dev Community</title></head>
+<body>
+  <header class="crayons-header"><a href="/" class="site-logo">DEV</a><form role="search"><input placeholder="Search..."></form><a href="#">Log in</a><a href="#">Create account</a></header>
+  <div class="crayons-layout">
+    <aside class="crayons-layout__sidebar-left" aria-label="Article actions">
+      <button aria-label="Like"><span>128</span></button>
+      <button aria-label="Comment"><span>34</span></button>
+      <button aria-label="Save"><span>Save</span></button>
+    </aside>
+    <main id="main-content">
+      <article class="crayons-card">
+        <header class="crayons-article__header">
+          <div class="crayons-article__subheader" data-expect="any"><a class="crayons-link fw-bold" href="#">Priya Raman</a> <time>Posted on Sep 9</time></div>
+          <h1 data-expect="yes">Stop using default exports in large codebases</h1>
+          <div class="spec__tags" data-expect="any"><a class="crayons-tag" href="#">#javascript</a><a class="crayons-tag" href="#">#webdev</a></div>
+        </header>
+        <div class="crayons-article__body text-styles" id="article-body">
+          <p data-expect="yes">Default exports look harmless, but they make refactoring harder than it needs to be.</p>
+          <h2 data-expect="yes">Names drift over time</h2>
+          <p data-expect="yes">When a module has a default export, every file can import it under a different name.</p>
+          <div class="highlight js-code-highlight"><pre class="highlight javascript"><code>import Button from './Button';
+import Btn from './Button';</code></pre></div>
+          <p data-expect="yes">With named exports, your editor can rename the symbol everywhere at once.</p>
+        </div>
+      </article>
+      <section id="comments" class="comments">
+        <h2 data-expect="yes">Top comments (2)</h2>
+        <div class="comment__container">
+          <div class="comment__header" data-expect="any"><a href="#">Leo</a> <span class="color-base-30">•</span> <time>Sep 9</time></div>
+          <div class="comment__body text-styles"><p data-expect="yes">Agreed. We switched last year and the number of broken imports dropped to almost zero.</p></div>
+          <footer class="comment__footer"><button>Like</button><button>Reply</button></footer>
+        </div>
+        <div class="comment__container">
+          <div class="comment__header" data-expect="any"><a href="#">Ana</a> <time>Sep 10</time></div>
+          <div class="comment__body text-styles"><p data-expect="yes">Default exports still make sense for framework pages that require them.</p></div>
+          <footer class="comment__footer"><button>Like</button><button>Reply</button></footer>
+        </div>
+      </section>
+    </main>
+  </div>
+  <footer class="crayons-footer"><p>A constructive and inclusive community for developers.</p></footer>
+</body>
+</html>

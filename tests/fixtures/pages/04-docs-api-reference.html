@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Storage API reference</title></head>
+<body>
+  <header><nav><a href="/">Docs home</a> <a href="/api">API</a></nav></header>
+  <main>
+    <h1 data-expect="yes">Storage API</h1>
+    <p data-expect="yes">Use the storage API to save small amounts of data on the device. Values are kept until the user clears them or the app removes them.</p>
+    <h2 data-expect="yes">Methods</h2>
+    <dl class="api-list">
+      <dt id="get"><code>get(key)</code></dt>
+      <dd>
+        <p data-expect="yes">Returns the value stored under the given key, or undefined when the key does not exist.</p>
+        <p data-expect="yes"><strong>Returns:</strong> <code>Promise&lt;unknown&gt;</code></p>
+      </dd>
+      <dt id="set"><code>set(key, value)</code></dt>
+      <dd>
+        <p data-expect="yes">Stores a value. Existing values for the same key are replaced.</p>
+      </dd>
+      <dt id="remove"><code>remove(key)</code></dt>
+      <dd data-expect="yes">Deletes a single entry.</dd>
+    </dl>
+    <h2 data-expect="yes">Errors</h2>
+    <table>
+      <thead><tr><th data-expect="yes">Code</th><th data-expect="yes">Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>QUOTA_EXCEEDED</code></td><td data-expect="yes">The device has no space left for this app.</td></tr>
+        <tr><td><code>NOT_ALLOWED</code></td><td data-expect="yes">Storage is disabled by the user or by policy.</td></tr>
+      </tbody>
+    </table>
+    <h2 data-expect="yes">Example</h2>
+    <pre class="language-js"><code><span class="token keyword">await</span> storage.<span class="token function">set</span>(<span class="token string">'theme'</span>, <span class="token string">'dark'</span>);</code></pre>
+    <p><code>storage.get('theme')</code></p>
+  </main>
+  <footer><p>Last updated on September 12, 2026</p></footer>
+</body>
+</html>
