@@ -11,6 +11,7 @@ import { createTranslator, resolveUiLang, type MessageKey } from '../shared/i18n
 import type { Settings } from '../shared/settings';
 import { protectTerms, restoreCode, restoreTerms, termsSurvive } from './protect';
 import { findRepeatedTerms, glossaryFor, lockTerms } from './terms';
+import { glossaryMapFor } from '../shared/glossary';
 import { LINE_ATTR, SEGMENT_ATTR, YILIN_ATTR, extractSegments, fingerprint, normalizeText, segmentCode, segmentMath, segmentText } from './extractor';
 import { RETRY_ATTR, applyStyle, hasTranslation, removeAllTranslations, removeTranslation, renderTranslation } from './renderer';
 
@@ -334,9 +335,10 @@ export class TranslationController {
    * Worked out when the first batch is about to go, from every paragraph the page has, and kept for the run.
    */
   private getLocks(): Promise<Map<string, string>> {
-    this.locks ??= lockTerms(findRepeatedTerms([...this.segments.values()].map((s) => s.text)), this.settings.targetLang, this.options.translate)
-      .catch(() => new Map<string, string>())
-      .then((locked) => new Map([...glossaryFor(this.settings.targetLang), ...locked]));
+    this.locks ??= Promise.all([
+      lockTerms(findRepeatedTerms([...this.segments.values()].map((s) => s.text)), this.settings.targetLang, this.options.translate).catch(() => new Map<string, string>()),
+      glossaryMapFor(this.settings.targetLang).catch(() => new Map<string, string>()),
+    ]).then(([locked, custom]) => new Map([...glossaryFor(this.settings.targetLang), ...locked, ...custom]));
     return this.locks;
   }
 

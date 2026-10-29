@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { TranslationController, type Translate, type VisibilityFactory } from '../src/content/controller';
 import type { SegmentResult } from '../src/shared/messages';
 import { DEFAULT_SETTINGS } from '../src/shared/settings';
+import { saveTerm } from '../src/shared/glossary';
 
 const translations = () => [...document.querySelectorAll('[data-yilin="translation"]')].map((n) => n.textContent);
 const tick = (ms = 5) => new Promise((r) => setTimeout(r, ms));
@@ -348,6 +349,26 @@ describe('TranslationController', () => {
     await until(() => translations().includes('T:Docs'));
     expect(translations()).toEqual(expect.arrayContaining(['T:Docs', 'T:Pricing', 'T:Title']));
     expect(document.querySelector('nav [data-yilin="translation"]')!.hasAttribute('data-compact')).toBe(true);
+  });
+
+  it('uses the reader\'s own glossary term, surviving a round trip through the engine untouched', async () => {
+    const data: Record<string, unknown> = {};
+    vi.stubGlobal('chrome', {
+      storage: { local: {
+        get: vi.fn(async (key: string) => ({ [key]: data[key] })),
+        set: vi.fn(async (items: Record<string, unknown>) => void Object.assign(data, items)),
+        remove: vi.fn(async (key: string) => void delete data[key]),
+      } },
+    });
+    await saveTerm({ term: 'Tokenizer', translation: '分词器', lang: 'zh-CN' });
+    document.body.innerHTML = '<p>Please run Tokenizer now.</p>';
+    // Echoes the protected text back unchanged, so the only way "分词器" can appear is restoreTerms
+    // putting the glossary's fixed translation back where the [[Tn]] placeholder stood.
+    controller = createController(async (segments) => segments.map((s) => ({ id: s.id, ok: true, text: s.text })));
+    controller.start();
+    await until(() => controller.getState().translated === 1);
+    expect(translations()[0]).toContain('分词器');
+    vi.unstubAllGlobals();
   });
 
   it('keeps translations when only the style changes', async () => {

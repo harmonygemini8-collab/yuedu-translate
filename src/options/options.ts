@@ -1,4 +1,5 @@
 import { VOCAB_KEY, clearVocab, dueWords, gradeWord, loadVocab, removeWord, toAnkiText, toCsv, type VocabEntry } from '../shared/vocab';
+import { GLOSSARY_KEY, clearGlossary, loadGlossary, removeTerm, saveTerm, type GlossaryEntry } from '../shared/glossary';
 import type { Grade } from '../shared/srs';
 import { idbCache } from '../shared/idb-cache';
 import { testCustom } from '../background/custom-engine';
@@ -637,6 +638,76 @@ void (function initVocab() {
     if (area === 'local' && VOCAB_KEY in changes) void refresh();
   });
   // The page language can change while the list is open.
+  document.getElementById('uiLang')?.addEventListener('change', () => setTimeout(render, 0));
+  void refresh();
+})();
+
+// ── Project-level glossary (doc/25 §1.1: user-managed terms, one translation per word per language) ──────
+void (function initGlossary() {
+  const term = document.getElementById('glossary-term') as HTMLInputElement;
+  const translation = document.getElementById('glossary-translation') as HTMLInputElement;
+  const lang = document.getElementById('glossary-lang') as HTMLSelectElement;
+  const add = document.getElementById('glossary-add')!;
+  const error = document.getElementById('glossary-error')!;
+  const list = document.getElementById('glossary-list')!;
+  const search = document.getElementById('glossary-search') as HTMLInputElement;
+  const count = document.getElementById('glossary-count')!;
+  const empty = document.getElementById('glossary-empty')!;
+  let entries: GlossaryEntry[] = [];
+  fillTargetSelect(lang);
+
+  function render() {
+    search.placeholder = t('glossary.search');
+    const q = search.value.trim().toLowerCase();
+    const shown = entries.filter((e) => !q || `${e.term} ${e.translation}`.toLowerCase().includes(q));
+    count.textContent = t('vocab.count', { n: entries.length });
+    empty.hidden = entries.length > 0;
+    list.replaceChildren(
+      ...shown.map((e) => {
+        const li = document.createElement('li');
+        const head = document.createElement('div');
+        const word = document.createElement('strong');
+        word.textContent = e.term;
+        const del = document.createElement('button');
+        del.type = 'button';
+        del.textContent = '✕';
+        del.title = t('vocab.delete');
+        del.setAttribute('aria-label', t('vocab.delete'));
+        del.addEventListener('click', () => void removeTerm(e.id));
+        head.append(word, ' → ', e.translation, del);
+        li.append(head);
+        return li;
+      }),
+    );
+  }
+
+  async function refresh() {
+    entries = await loadGlossary();
+    render();
+  }
+  search.addEventListener('input', render);
+  lang.value = targetLang.value;
+  add.addEventListener('click', async () => {
+    error.hidden = true;
+    const termValue = term.value.trim();
+    const translationValue = translation.value.trim();
+    if (!termValue || !translationValue) return;
+    const result = await saveTerm({ term: termValue, translation: translationValue, lang: lang.value as Settings['targetLang'] });
+    if (result === 'full') {
+      error.textContent = t('glossary.full');
+      error.hidden = false;
+      return;
+    }
+    term.value = '';
+    translation.value = '';
+    term.focus();
+  });
+  document.getElementById('glossary-clear')!.addEventListener('click', async () => {
+    if (entries.length > 0 && confirm(t('vocab.confirmClear'))) await clearGlossary();
+  });
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local' && GLOSSARY_KEY in changes) void refresh();
+  });
   document.getElementById('uiLang')?.addEventListener('change', () => setTimeout(render, 0));
   void refresh();
 })();

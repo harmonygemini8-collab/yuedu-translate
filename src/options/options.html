@@ -33,6 +33,10 @@
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3h9a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3V3z"/><path d="M7 7h6M7 10h6"/></svg>
           <span data-i18n="nav.vocab"></span>
         </button>
+        <button class="nav-item" data-section="glossary" type="button">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 5h14M3 10h14M3 15h8"/></svg>
+          <span data-i18n="nav.glossary"></span>
+        </button>
         <button class="nav-item" data-section="account" type="button" id="nav-account" hidden>
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="8" r="3.5"/><path d="M3 17c0-3.87 3.13-7 7-7s7 3.13 7 7"/></svg>
           <span data-i18n="nav.account">账号</span>
@@ -233,6 +237,28 @@
         <p id="vocab-empty" class="hint" data-i18n="vocab.empty" hidden></p>
       </section>
 
+      <!-- glossary -->
+      <section id="sec-glossary" class="settings-section" hidden>
+        <h2 data-i18n="nav.glossary"></h2>
+        <p class="hint" data-i18n="glossary.hint"></p>
+
+        <div class="field-group">
+          <input id="glossary-term" type="text" size="18" data-i18n-attr="placeholder:glossary.term">
+          <input id="glossary-translation" type="text" size="18" data-i18n-attr="placeholder:glossary.translation">
+          <select id="glossary-lang"></select>
+          <button id="glossary-add" type="button" data-i18n="glossary.add"></button>
+        </div>
+        <p id="glossary-error" class="hint" role="status" hidden></p>
+
+        <p>
+          <input id="glossary-search" type="search" size="24">
+          <button id="glossary-clear" type="button" data-i18n="glossary.clear"></button>
+          <span id="glossary-count" class="hint" role="status"></span>
+        </p>
+        <ul id="glossary-list" class="vocab-list"></ul>
+        <p id="glossary-empty" class="hint" data-i18n="glossary.empty" hidden></p>
+      </section>
+
       <!-- account -->
       <section id="sec-account" class="settings-section" hidden>
         <h2 data-i18n="nav.account">账号</h2>
@@ -287,6 +313,7 @@
             <li data-i18n="privacy.item13"></li>
             <li data-i18n="privacy.item14"></li>
             <li data-i18n="privacy.item15"></li>
+            <li data-i18n="privacy.item16"></li>
           </ul>
         </div>
       </section>
