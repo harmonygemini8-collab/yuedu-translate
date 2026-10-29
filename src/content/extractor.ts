@@ -291,9 +291,15 @@ export const mathToken = (n: number) => `[[${n}]]`;
  */
 export const MATH_TOKEN = /\[\s*\[\s*(\d+)\s*\](?:\s*\])?|(?<!\[)\[\s*(\d+)\s*\]\s*\]/g;
 
+export const codeToken = (n: number) => `[[C${n}]]`;
+/** Tolerant the same way MATH_TOKEN is: an engine can lose a bracket or add a space around the token. */
+export const CODE_TOKEN = /\[\s*\[\s*C\s*(\d+)\s*\](?:\s*\])?|(?<!\[)\[\s*C\s*(\d+)\s*\]\s*\]/g;
+
 interface SegmentAnalysis {
   /** The formulas inside the sentence, in order; placeholder `[[n]]` in the text stands for `math[n - 1]`. */
   math: Element[];
+  /** Inline code/command/identifier text (<code>, <kbd>, <samp>, <var>, <tt>), in order; placeholder `[[Cn]]` stands for `code[n - 1]`. Kept verbatim so an engine never "helpfully" translates a command or identifier. */
+  code: string[];
   text: string;
   /** Letters outside code/kbd elements. */
   proseLetters: number;
@@ -307,7 +313,7 @@ interface SegmentAnalysis {
  * paragraphs (e.g. a sub-list inside an <li>), excluded subtrees and our own nodes.
  */
 function analyze(el: Element, pass: Pass): SegmentAnalysis {
-  const result: SegmentAnalysis = { math: [], text: '', proseLetters: 0, unlinkedLetters: 0, links: 0 };
+  const result: SegmentAnalysis = { math: [], code: [], text: '', proseLetters: 0, unlinkedLetters: 0, links: 0 };
   const walk = (node: Node, inCode: boolean, inLink: boolean) => {
     for (const child of node.childNodes) {
       if (child.nodeType === Node.TEXT_NODE) {
@@ -321,6 +327,14 @@ function analyze(el: Element, pass: Pass): SegmentAnalysis {
         // is never checked for being hidden — same as before this check existed.
         result.math.push(child);
         result.text += mathToken(result.math.length);
+      } else if (child instanceof Element && !inCode && CODE_TAGS.has(child.tagName)) {
+        // A command or identifier sitting inline in a sentence ("run `npm run build:ext`"): kept exactly as
+        // written, never sent to the engine as ordinary words, same reasoning as a formula placeholder.
+        const code = normalizeText(child.textContent ?? '');
+        if (code) {
+          result.code.push(code);
+          result.text += codeToken(result.code.length);
+        }
       } else if (child instanceof Element && pass.isHidden(child)) {
         // Not read, not translated: a sighted reader never sees it either (LaTeXML leaves `display:none`
         // backref markers — a stray "1" — inside a footnote's own text; seen on ar5iv, doc/24 §3).
@@ -341,6 +355,9 @@ function analyze(el: Element, pass: Pass): SegmentAnalysis {
 
 /** The formulas the placeholders in `segmentText` stand for. */
 export const segmentMath = (el: Element, scope: Scope = 'article') => analyze(el, new Pass(scope)).math;
+
+/** The inline code/command/identifier text the `[[Cn]]` placeholders in `segmentText` stand for. */
+export const segmentCode = (el: Element, scope: Scope = 'article') => analyze(el, new Pass(scope)).code;
 
 /** Must use the same scope as the extraction, or the text (and its fingerprint) would differ. */
 export const segmentText = (el: Element, scope: Scope = 'article') => analyze(el, new Pass(scope)).text;

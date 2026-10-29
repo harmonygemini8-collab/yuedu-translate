@@ -5,6 +5,7 @@
  * still read as one.
  */
 
+import { CODE_TOKEN } from './extractor';
 import { lockedPattern } from './terms';
 
 const WORD = String.raw`\p{L}`;
@@ -32,8 +33,8 @@ const PATTERNS: RegExp[] = [
  */
 const NAME_CHAIN = /\b(?=[A-Za-z0-9+/-]*[A-Z0-9])[A-Za-z]+(?:[-+/][A-Za-z0-9]+)+\b/gu;
 const ACRONYM = /\b[A-Z]{2,8}s?\b/gu;
-/** Placeholders already in the text: the formulas. */
-const TAKEN = /\[\[\d+\]\]/gu;
+/** Placeholders already in the text: the formulas (`[[n]]`) and inline code/commands (`[[Cn]]`). */
+const TAKEN = /\[\[C?\d+\]\]/gu;
 
 /** A heading in capitals is not made of acronyms; acronyms are protected only inside running text. */
 const hasRunningText = (text: string) => (text.match(/\b[a-z]{2,}\b/g)?.length ?? 0) >= 4;
@@ -87,4 +88,19 @@ export function restoreTerms(text: string, terms: string[]): string {
 export function termsSurvive(text: string, terms: string[]): boolean {
   const seen = new Set([...text.matchAll(TERM_TOKEN)].map((m) => Number(m[1] ?? m[2])));
   return terms.every((_, i) => seen.has(i + 1));
+}
+
+/** Puts the inline code/command/identifier text back where `[[Cn]]` placeholders stand, same resilience as `restoreTerms`. */
+export function restoreCode(text: string, code: string[]): string {
+  if (code.length === 0) return text;
+  const used = new Set<number>();
+  const restored = text.replace(CODE_TOKEN, (_, a?: string, b?: string) => {
+    const n = a ?? b;
+    const value = code[Number(n) - 1];
+    if (value === undefined) return '';
+    used.add(Number(n));
+    return value;
+  });
+  const lost = code.filter((_, i) => !used.has(i + 1));
+  return lost.length > 0 ? `${restored} ${lost.join(' ')}` : restored;
 }

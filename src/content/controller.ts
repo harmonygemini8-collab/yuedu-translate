@@ -9,9 +9,9 @@ import {
 } from '../shared/messages';
 import { createTranslator, resolveUiLang, type MessageKey } from '../shared/i18n';
 import type { Settings } from '../shared/settings';
-import { protectTerms, restoreTerms, termsSurvive } from './protect';
+import { protectTerms, restoreCode, restoreTerms, termsSurvive } from './protect';
 import { findRepeatedTerms, glossaryFor, lockTerms } from './terms';
-import { LINE_ATTR, SEGMENT_ATTR, YILIN_ATTR, extractSegments, fingerprint, normalizeText, segmentMath, segmentText } from './extractor';
+import { LINE_ATTR, SEGMENT_ATTR, YILIN_ATTR, extractSegments, fingerprint, normalizeText, segmentCode, segmentMath, segmentText } from './extractor';
 import { RETRY_ATTR, applyStyle, hasTranslation, removeAllTranslations, removeTranslation, renderTranslation } from './renderer';
 
 export type Translate = (segments: SegmentInput[], targetLang: Settings['targetLang']) => Promise<SegmentResult[]>;
@@ -350,9 +350,10 @@ export class TranslationController {
     const locked = await this.getLocks();
     if (generation !== this.generation) return;
     const protectedText = new Map(batch.map((s) => [s.id, protectTerms(s.text.slice(0, MAX_SEGMENT_CHARS), { cell: !!s.el.closest('table') || s.el.classList.contains('ltx_bibblock'), locked })]));
+    const codeFor = new Map(batch.map((s) => [s.id, segmentCode(s.el, this.settings.scope)]));
     try {
       // A segment that is nothing but names ("QNLI", "BiLSTM+ELMo+Attn") has nothing to translate; it is not sent.
-      const hasWords = (id: string) => /\p{L}/u.test(protectedText.get(id)!.text.replace(/\[\[T?\d+\]\]/g, ''));
+      const hasWords = (id: string) => /\p{L}/u.test(protectedText.get(id)!.text.replace(/\[\[[CT]?\d+\]\]/g, ''));
       const toSend = batch.filter((s) => hasWords(s.id));
       const answers: SegmentResult[] = [
         ...batch.filter((s) => !hasWords(s.id)).map((s) => ({ id: s.id, ok: true as const, text: restoreTerms(protectedText.get(s.id)!.text, protectedText.get(s.id)!.terms) })),
@@ -375,6 +376,9 @@ export class TranslationController {
     } catch {
       results = batch.map((s) => ({ id: s.id, ok: false, error: 'NETWORK' as const }));
     }
+    // Commands and identifiers inside inline code travel as `[[Cn]]` placeholders no matter which path
+    // above produced the answer (first try, retry, or skipped translation), so this runs once for all of them.
+    results = results.map((r) => (r.ok ? { ...r, text: restoreCode(r.text, codeFor.get(r.id) ?? []) } : r));
     if (generation !== this.generation) return;
     this.inflight--;
     const answered = new Set<string>();

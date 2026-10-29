@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { protectTerms, restoreTerms } from '../src/content/protect';
+import { protectTerms, restoreCode, restoreTerms } from '../src/content/protect';
 
 const round = (text: string) => protectTerms(text);
 
@@ -29,6 +29,18 @@ describe('protected terms', () => {
     const { terms } = round('We fine-tune BERT_LARGE with [MASK] tokens now.');
     expect(restoreTerms('我们用 [[T1]] 和 [[T2]] 微调。', terms)).toBe('我们用 BERT_LARGE 和 [MASK] 微调。');
     expect(restoreTerms('我们用 [[T1]] 微调。', terms)).toBe('我们用 BERT_LARGE 微调。 [MASK]');
+  });
+
+  it('leaves an inline-code placeholder alone, same as a formula placeholder', () => {
+    expect(round('Run [[C1]] to build GPT-3 locally.').text).toBe('Run [[C1]] to build [[T1]] locally.');
+  });
+});
+
+describe('inline code placeholders', () => {
+  it('puts the code back, tolerant of a mangled bracket, and keeps one the translation dropped', () => {
+    expect(restoreCode('运行 [[C1]] 然后 [[C2]]。', ['npm run build:ext', 'npm test'])).toBe('运行 npm run build:ext 然后 npm test。');
+    expect(restoreCode('运行 [ [C1]] 然后。', ['npm run build:ext'])).toBe('运行 npm run build:ext 然后。');
+    expect(restoreCode('只运行了一个。', ['npm run build:ext'])).toBe('只运行了一个。 npm run build:ext');
   });
 });
 

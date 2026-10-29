@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { extractSegments, fingerprint, insertionPoint, segmentText, shouldTranslate } from '../src/content/extractor';
+import { extractSegments, fingerprint, insertionPoint, segmentCode, segmentText, shouldTranslate } from '../src/content/extractor';
 
 const texts = () => extractSegments(document.body, 'zh-CN').map((s) => s.text);
 
@@ -8,9 +8,17 @@ describe('extractSegments', () => {
     document.body.innerHTML = '';
   });
 
-  it('keeps inline links and code inside one paragraph', () => {
+  it('keeps inline links and code inside one paragraph, with code replaced by a placeholder', () => {
     document.body.innerHTML = '<p>Read the <a href="#">guide</a> and run <code>npm test</code> now.</p>';
-    expect(texts()).toEqual(['Read the guide and run npm test now.']);
+    expect(texts()).toEqual(['Read the guide and run [[C1]] now.']);
+    expect(segmentCode(document.querySelector('p')!)).toEqual(['npm test']);
+  });
+
+  it('protects more than one inline code span, numbered in order, and command-line flags', () => {
+    document.body.innerHTML = '<p>Pass <kbd>--api</kbd> or set <code>YILIN_API_BASE</code> before running <code>npm run build:ext</code>.</p>';
+    const p = document.querySelector('p')!;
+    expect(texts()).toEqual(['Pass [[C1]] or set [[C2]] before running [[C3]].']);
+    expect(segmentCode(p)).toEqual(['--api', 'YILIN_API_BASE', 'npm run build:ext']);
   });
 
   it('skips code blocks, form fields, navigation, footer and hidden content', () => {
@@ -170,7 +178,7 @@ describe('extractSegments', () => {
       <div>pipeline.config.json</div>
       <div><a href="#">Home</a> · <a href="#">About</a> · <a href="#">Contact</a></div>
       <p>Run <code>npm install</code> first.</p>`;
-    expect(texts()).toEqual(['Run npm install first.']);
+    expect(texts()).toEqual(['Run [[C1]] first.']);
   });
 
   it('keeps a block whose class name says chrome but whose content is prose', () => {
