@@ -135,7 +135,24 @@ function renderAccount() {
   $('acc-quotas').replaceChildren(...Object.entries(account.quotas).map(([pool, q]) => {
     const li = document.createElement('li');
     const colon = currentLang.startsWith('zh') ? '：' : ': ';
-    li.textContent = `${t(`account.pool.${pool}` as MessageKey)}${colon}${t('account.quota', { used: formatNumber(q.used), limit: formatNumber(q.limit), date: formatDate(q.resetAt) })}`;
+    const remaining = Math.max(0, q.limit - q.used);
+    const fraction = q.limit > 0 ? remaining / q.limit : 1;
+    const head = document.createElement('div');
+    head.className = 'quota-head';
+    const name = document.createElement('span');
+    name.textContent = `${t(`account.pool.${pool}` as MessageKey)}${colon}${t('account.remaining', { n: formatNumber(remaining) })}`;
+    head.append(name);
+    const bar = document.createElement('div');
+    bar.className = 'quota-bar';
+    const fill = document.createElement('div');
+    fill.className = 'quota-bar__fill';
+    fill.style.width = `${Math.round(fraction * 100)}%`;
+    if (fraction <= 0.1) fill.classList.add('low');
+    bar.append(fill);
+    const detail = document.createElement('span');
+    detail.className = 'quota-detail';
+    detail.textContent = t('account.quota', { used: formatNumber(q.used), limit: formatNumber(q.limit), date: formatDate(q.resetAt) });
+    li.append(head, bar, detail);
     return li;
   }));
 }
@@ -146,6 +163,16 @@ async function refreshAccount() {
   else accountError(result.error);
   renderAccount();
 }
+
+/** Keeps the quota bars current while the reader is looking at this page, instead of only on open. */
+let quotaRefreshTimer: ReturnType<typeof setInterval> | undefined;
+function startQuotaAutoRefresh() {
+  clearInterval(quotaRefreshTimer);
+  quotaRefreshTimer = setInterval(() => {
+    if (account && document.visibilityState === 'visible') void refreshAccount();
+  }, 20_000);
+}
+window.addEventListener('pagehide', () => clearInterval(quotaRefreshTimer));
 
 /** Open the website login page and poll for the token the website will store after sign-in. */
 function openWebLogin() {
@@ -411,7 +438,7 @@ async function init() {
   localize(settings.uiLang);
   fillAbout();
   fill(settings);
-  if (hasBackend()) void refreshAccount();
+  if (hasBackend()) { void refreshAccount(); startQuotaAutoRefresh(); }
   form.addEventListener('input', (e) => e.target !== disabledSites && e.target !== apiToken && e.target !== customKey && void save(e));
   disabledSites.addEventListener('change', () => void save());
   // Show what went wrong instead of letting the button look inert.

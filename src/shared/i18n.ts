@@ -281,6 +281,7 @@ const zhCN = {
   'account.pool.pro_standard': 'VIP 标准额度',
   'account.pool.pro_premium': 'VIP 高质量额度',
   'account.quota': '{used} / {limit} 字符 · {date} 重置',
+  'account.remaining': '剩余 {n} 字符',
   'account.vipTrial': 'VIP 目前为邀请试用',
   'account.notInvited': '此邮箱尚未受邀。VIP 目前为邀请试用，可来信 {email} 申请',
 };
@@ -552,6 +553,7 @@ const zhTW: Catalog = {
   'account.pool.pro_standard': 'VIP 標準額度',
   'account.pool.pro_premium': 'VIP 高品質額度',
   'account.quota': '{used} / {limit} 字元 · {date} 重設',
+  'account.remaining': '剩餘 {n} 字元',
   'account.vipTrial': 'VIP 目前為邀請試用',
   'account.notInvited': '此信箱尚未受邀。VIP 目前為邀請試用，可來信 {email} 申請',
 };
@@ -820,6 +822,7 @@ const en: Catalog = {
   'account.pool.pro_standard': 'VIP standard',
   'account.pool.pro_premium': 'VIP premium',
   'account.quota': '{used} / {limit} characters · resets {date}',
+  'account.remaining': '{n} characters left',
   'account.vipTrial': 'VIP is invitation-only for now',
   'account.notInvited': 'This address has not been invited. The VIP trial is invitation-only — write to {email} to ask for one.',
 };
@@ -1088,6 +1091,7 @@ const vi: Catalog = {
   'account.pool.pro_standard': 'VIP tiêu chuẩn',
   'account.pool.pro_premium': 'VIP chất lượng cao',
   'account.quota': '{used} / {limit} ký tự · đặt lại {date}',
+  'account.remaining': 'Còn lại {n} ký tự',
   'account.vipTrial': 'VIP hiện chỉ dành cho người được mời',
   'account.notInvited': 'Địa chỉ này chưa được mời. Bản dùng thử VIP chỉ dành cho người được mời — hãy gửi thư tới {email} để xin lời mời.',
 };
@@ -1356,6 +1360,7 @@ const ms: Catalog = {
   'account.pool.pro_standard': 'VIP standard',
   'account.pool.pro_premium': 'VIP premium',
   'account.quota': '{used} / {limit} aksara · ditetapkan semula {date}',
+  'account.remaining': '{n} aksara berbaki',
   'account.vipTrial': 'VIP kini melalui jemputan sahaja',
   'account.notInvited': 'Alamat ini belum dijemput. Percubaan VIP adalah melalui jemputan sahaja — e-mel {email} untuk memohon.',
 };
@@ -1624,6 +1629,7 @@ const ar: Catalog = {
   'account.pool.pro_standard': 'VIP القياسية',
   'account.pool.pro_premium': 'VIP عالية الجودة',
   'account.quota': '{used} / {limit} حرف · تُجدَّد في {date}',
+  'account.remaining': 'متبقٍ {n} حرف',
   'account.vipTrial': 'VIP متاح حاليًا بالدعوة فقط',
   'account.notInvited': 'لم تتم دعوة هذا العنوان. النسخة التجريبية من VIP بالدعوة فقط — راسل {email} لطلب دعوة.',
 };
@@ -1892,6 +1898,7 @@ const ja: Catalog = {
   'account.pool.pro_standard': 'VIP 標準枠',
   'account.pool.pro_premium': 'VIP 高品質枠',
   'account.quota': '{used} / {limit} 文字 · {date} にリセット',
+  'account.remaining': '残り {n} 文字',
   'account.vipTrial': 'VIP は現在、招待制の試用のみです',
   'account.notInvited': 'このアドレスは招待されていません。VIP は招待制のため、{email} までご連絡ください',
 };
