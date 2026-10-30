@@ -27,6 +27,7 @@ import {
   ALL_SITES_ORIGINS,
   isSiteDisabled,
   loadSettings,
+  normalizeHost,
   saveSettings,
   type DisplayMode,
   type EngineChoice,
@@ -295,6 +296,23 @@ async function init() {
     if (tab?.url && isSiteDisabled(settings, new URL(tab.url).hostname)) return setDisabled(t('error.siteDisabled'));
     await send('GET_STATE', false);
   };
+
+  // A quick on/off for the current site, next to the translate button rather than buried in
+  // Settings — the settings-page textarea (FR-12) still exists for editing the whole list at once.
+  const siteHost = !isRestrictedUrl(tab?.url) && tab?.url ? normalizeHost(new URL(tab.url).hostname) : null;
+  if (siteHost) {
+    const disableSiteRow = $<HTMLLabelElement>('disable-site-row');
+    const disableSiteCheckbox = $<HTMLInputElement>('disable-site');
+    disableSiteRow.hidden = false;
+    disableSiteCheckbox.checked = isSiteDisabled(settings, siteHost);
+    disableSiteCheckbox.addEventListener('change', async () => {
+      const next = disableSiteCheckbox.checked
+        ? [...new Set([...settings.disabledSites, siteHost])]
+        : settings.disabledSites.filter((site) => site !== siteHost);
+      Object.assign(settings, await saveSettings({ disabledSites: next }));
+      await showMain();
+    });
+  }
 
   if (settings.privacyAcknowledged) return showMain();
   privacy.hidden = false;
