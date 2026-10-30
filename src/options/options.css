@@ -1,27 +1,35 @@
 :root {
   color-scheme: light dark;
   --accent: #2f6f5e;
+  --accent-hover: #285f50;
+  --accent-ink: #1f5245;
   --error: #b42318;
   --warn-bg: #fff4d6;
   --warn-ink: #7a5a00;
   --accent-tint: #e7f3ef;
+  --accent-tint-hover: #d6eae3;
   --muted: #6b7280;
   --border: #d9dde3;
+  --surface: #ffffff;
   --sidebar-bg: #f7f8fa;
-  --sidebar-width: 192px;
+  --sidebar-width: 236px;
   --content-bg: #fff;
+  --card-bg: var(--surface);
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --border: #2e3440;
+    --surface: #1a1d23;
     --sidebar-bg: #1a1d23;
     --accent-tint: #1d2e28;
+    --accent-tint-hover: #243a33;
     --content-bg: #13151a;
+    --card-bg: var(--surface);
   }
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; font: 14px/1.6 system-ui, "Microsoft YaHei", sans-serif; min-height: 100vh; }
+body { margin: 0; font: 14px/1.6 system-ui, "Microsoft YaHei", sans-serif; min-height: 100vh; color: inherit; }
 
 /* ── Layout ───────────────────────────────────────────────── */
 .layout { display: flex; min-height: 100vh; }
@@ -33,7 +41,7 @@ body { margin: 0; font: 14px/1.6 system-ui, "Microsoft YaHei", sans-serif; min-h
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  padding: 20px 0 16px;
+  padding: 22px 14px 18px;
   position: sticky;
   top: 0;
   height: 100vh;
@@ -44,22 +52,22 @@ body { margin: 0; font: 14px/1.6 system-ui, "Microsoft YaHei", sans-serif; min-h
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 18px 16px;
-  font-size: 17px;
+  padding: 2px 8px 16px;
+  font-size: 15px;
   font-weight: 700;
-  color: var(--accent);
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 10px;
+  color: inherit;
 }
-.sidebar-brand img { border-radius: 6px; }
+.sidebar-brand img { border-radius: 8px; }
 
 .mock-banner {
-  margin: 0 12px 8px;
-  padding: 4px 8px;
-  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+  margin: 0 8px 16px;
+  padding: 5px 10px;
+  border-radius: 999px;
   background: var(--warn-bg);
   color: var(--warn-ink);
-  font-size: 12px;
+  font-size: 11.5px;
   text-align: center;
 }
 .mock-banner[hidden] { display: none; }
@@ -67,8 +75,8 @@ body { margin: 0; font: 14px/1.6 system-ui, "Microsoft YaHei", sans-serif; min-h
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 0 10px;
+  gap: 1px;
+  padding: 0 2px;
 }
 
 .nav-item {
@@ -76,44 +84,71 @@ body { margin: 0; font: 14px/1.6 system-ui, "Microsoft YaHei", sans-serif; min-h
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 9px 10px;
+  padding: 9px 12px;
   border: none;
-  border-radius: 8px;
+  border-radius: 9px;
   background: transparent;
   color: var(--muted);
   font: inherit;
-  font-size: 13px;
+  font-size: 13.5px;
   cursor: pointer;
   text-align: left;
   transition: background 0.12s, color 0.12s;
 }
 .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
 .nav-item:hover { background: var(--border); color: inherit; }
-.nav-item.active { background: var(--accent-tint); color: var(--accent); font-weight: 600; }
+.nav-item.active { background: var(--accent-tint); color: var(--accent-ink); font-weight: 600; }
 
 /* ── Content ──────────────────────────────────────────────── */
 .content {
   flex: 1;
   background: var(--content-bg);
-  padding: 32px 36px;
-  max-width: 680px;
+  padding: 44px 56px 64px;
+  max-width: 900px;
 }
 
 .settings-section { display: block; }
-.settings-section h2 {
-  font-size: 18px;
+.settings-section > h2 {
+  font-size: 22px;
   font-weight: 700;
-  margin: 0 0 20px;
+  margin: 0 0 28px;
   color: inherit;
 }
 .settings-section h3 {
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--muted);
-  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 3px;
+  color: inherit;
 }
+
+/* Card: the primary grouping unit. Direct child of a section (not nested) gets the bottom margin
+   between cards; .field-group inside a card loses its own border, replaced by the card's dividers. */
+.card,
+.vocab-review-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 2px rgba(16, 24, 32, 0.04);
+}
+.card:last-child { margin-bottom: 0; }
+.card > .field-group { padding: 16px 0; border-bottom: 1px solid var(--border); }
+.card > .field-group:first-child { padding-top: 0; }
+.card > .field-group:last-child { border-bottom: none; padding-bottom: 0; }
+.field-group > h3 + .hint { margin-top: 0; margin-bottom: 16px; }
+
+/* A callout card carries its own accent tint (review reminder, status banners). */
+.card.callout {
+  background: var(--accent-tint);
+  border-color: var(--accent-tint-hover);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.card.callout > span { color: var(--accent-ink); font-weight: 600; font-size: 13.5px; }
 
 .field-group {
   padding: 16px 0;
@@ -123,50 +158,101 @@ body { margin: 0; font: 14px/1.6 system-ui, "Microsoft YaHei", sans-serif; min-h
 
 label { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
 label.block { display: block; }
+label > span:first-child { font-size: 12.5px; font-weight: 600; color: inherit; min-width: 7em; }
+
+select, input[type="text"], input[type="password"], input[type="url"], input[type="search"] {
+  font: inherit;
+  font-size: 13.5px;
+  height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  color: inherit;
+}
+select { padding-right: 8px; min-width: 200px; }
+input[type="search"] { height: 34px; }
+
 textarea {
   display: block;
   width: 100%;
   margin-top: 6px;
   box-sizing: border-box;
-  font: 13px/1.5 Consolas, monospace;
+  font: 13px/1.6 Consolas, monospace;
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 6px 8px;
-  background: transparent;
+  padding: 8px 10px;
+  background: var(--card-bg);
   color: inherit;
 }
 
 button, select {
   font: inherit;
-  padding: 6px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: transparent;
-  color: inherit;
   cursor: pointer;
 }
-button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-button:hover:not(:disabled) { opacity: 0.85; }
-
-input[type="text"], input[type="password"] {
-  font: inherit;
-  padding: 5px 8px;
+button {
+  height: 34px;
+  padding: 0 14px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  background: transparent;
+  background: var(--card-bg);
   color: inherit;
+  font-size: 12.5px;
 }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-size: 13px; font-weight: 600; }
+button.primary:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+button:hover:not(:disabled):not(.primary) { background: var(--accent-tint); border-color: var(--accent-tint-hover); }
+button:disabled { opacity: 0.5; cursor: default; }
+
+/* ── Toggle switch: a real checkbox, restyled. Keeps full keyboard/a11y semantics. ── */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 38px;
+  height: 22px;
+  min-width: 38px;
+  border-radius: 999px;
+  background: var(--border);
+  border: none;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s;
+}
+input[type="checkbox"]:checked { background: var(--accent); }
+input[type="checkbox"]:checked::after { transform: translateX(16px); }
+input[type="checkbox"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+label:has(> input[type="checkbox"]) { align-items: flex-start; }
+label > input[type="checkbox"] { margin-top: 2px; }
+label:has(> input[type="checkbox"]) > span:first-child { font-weight: 600; font-size: 13.5px; min-width: 0; }
+
+input[type="range"] { accent-color: var(--accent); flex: 1; }
+input[type="color"] { width: 30px; height: 30px; padding: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); cursor: pointer; }
 
 .preview {
-  margin-top: 14px;
-  padding: 14px;
-  border: 1px dashed var(--border);
-  border-radius: 8px;
+  margin-top: 0;
+  padding: 18px 22px;
+  background: var(--sidebar-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
 }
-.preview p { margin: 0 0 4px; color: var(--muted); font-size: 13px; }
-.yilin-translation-preview { display: block; }
+.preview p { margin: 0 0 8px; color: inherit; font-size: 14px; }
+.yilin-translation-preview { display: block; padding-left: 10px; border-left: 2px solid var(--accent); }
 
-.hint { margin: 4px 0 6px; color: var(--muted); font-size: 13px; }
+.hint { margin: 4px 0 6px; color: var(--muted); font-size: 12.5px; }
 #connection-status { display: block; margin-top: 6px; font-size: 13px; white-space: pre-line; }
 
 /* account section */
@@ -175,9 +261,10 @@ input[type="text"], input[type="password"] {
 .quotas li { margin: 2px 0; }
 
 /* about */
-.about-list { list-style: none; padding: 0; margin: 0 0 16px; }
-.about-list li { padding: 6px 0; border-bottom: 1px solid var(--border); }
-.about-list li:last-child { border-bottom: none; }
+.about-list { list-style: none; padding: 0; margin: 0; }
+.about-list li { display: flex; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+.about-list li:first-child { padding-top: 0; }
+.about-list li:last-child { border-bottom: none; padding-bottom: 0; }
 .about-list a { color: var(--accent); }
 
 /* saved feedback */
@@ -191,16 +278,28 @@ input[type="text"], input[type="password"] {
 
 [hidden] { display: none !important; }
 
-.vocab-list { list-style: none; margin: 12px 0 0; padding: 0; }
-.vocab-list li { padding: 10px 0; border-bottom: 1px solid var(--line, rgb(128 128 128 / 25%)); }
+.vocab-list, #auto-list { list-style: none; margin: 0; padding: 0; }
+.vocab-list li, #auto-list li { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.vocab-list li:first-child, #auto-list li:first-child { padding-top: 0; }
+.vocab-list li:last-child, #auto-list li:last-child { border-bottom: none; padding-bottom: 0; }
 .vocab-list li > div:first-child { display: flex; align-items: baseline; gap: 6px; }
-.vocab-list li > div:first-child button { margin-inline-start: auto; border: 0; background: transparent; color: inherit; opacity: 0.6; cursor: pointer; }
-.vocab-list li > div:first-child button:hover { opacity: 1; }
-
-#vocab-review-bar { display: flex; align-items: center; gap: 10px; }
-.vocab-review-card {
-  max-width: 28em; margin: 12px 0; padding: 16px; border: 1px solid var(--line, rgb(128 128 128 / 25%)); border-radius: 10px;
+.vocab-list li > div:first-child button,
+#auto-list li button {
+  margin-inline-start: auto;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  opacity: 0.5;
+  cursor: pointer;
+  height: auto;
+  padding: 0;
 }
+.vocab-list li > div:first-child button:hover,
+#auto-list li button:hover { opacity: 1; background: transparent; }
+#auto-list li { display: flex; align-items: center; font-size: 13.5px; }
+
+#vocab-review-bar { display: flex; align-items: center; gap: 10px; justify-content: space-between; }
+.vocab-review-card { max-width: 28em; }
 #vocab-review-front { font-size: 1.3em; font-weight: 600; }
 #vocab-review-back { margin-top: 10px; }
 #vocab-review-grades { display: flex; gap: 10px; margin-top: 12px; }

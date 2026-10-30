@@ -101,6 +101,8 @@ document.getElementById('connection')!.hidden = !hasBackend() || IS_PUBLIC;
 document.querySelector<HTMLElement>('.mock-banner')!.hidden = IS_PUBLIC;
 // A developer's tool: the store build does not show it.
 document.getElementById('debug-row')!.hidden = IS_PUBLIC;
+// The card around them collapses to nothing when both are empty, instead of showing a blank shell.
+document.getElementById('dev-card')!.hidden = document.getElementById('debug-row')!.hidden && document.getElementById('connection')!.hidden;
 
 // ---- Account (doc/15 §9.1): only meaningful in builds that talk to the Yuedu server.
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
