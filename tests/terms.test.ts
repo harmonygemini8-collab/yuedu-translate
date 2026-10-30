@@ -11,12 +11,24 @@ describe('terms the page repeats', () => {
     'A Masked Language Model is trained once.',
   ];
 
-  it('finds capitalised multi-word terms that come up more than once, and nothing else', () => {
-    expect(findRepeatedTerms(page)).toEqual(['Scaled Dot-Product Attention', 'Multi-Head Attention']);
+  it('finds capitalised multi-word terms that come up more than once, longest first', () => {
+    expect(findRepeatedTerms(page)).toEqual(['Scaled Dot-Product Attention', 'Multi-Head Attention', 'Attention']);
   });
 
   it('does not take the first word of a sentence for a part of a term', () => {
     expect(findRepeatedTerms(['The Encoder Stack has six layers.', 'Then The Encoder Stack is repeated.'])).toEqual(['Encoder Stack']);
+  });
+
+  it('locks a single capitalised word too, but only once it comes up often enough to read as a name', () => {
+    // Twice is not enough on its own — "Decoder" here is as likely an ordinary capitalised mention as a term.
+    expect(findRepeatedTerms(['A Decoder block follows.', 'The Decoder reuses the same stack.'])).toEqual([]);
+    expect(findRepeatedTerms([
+      'A Decoder block follows.', 'The Decoder reuses the same stack.', 'Each Decoder layer has three parts.',
+    ])).toEqual(['Decoder']);
+  });
+
+  it('does not lock an all-caps abbreviation as a single-word term — that goes through the no-translate list instead', () => {
+    expect(findRepeatedTerms(['BERT is a model.', 'BERT is pre-trained.', 'BERT is fine-tuned.'])).toEqual([]);
   });
 
   it('translates each once and leaves out one the engine failed on or did not change', async () => {

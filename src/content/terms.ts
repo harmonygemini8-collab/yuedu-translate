@@ -10,14 +10,25 @@ import type { TargetLang } from '../shared/settings';
 /** A word of a term: Capitalised, or a hyphenated compound of them ("Dot-Product"), or an all-caps abbreviation ("LM"). */
 const WORD = String.raw`(?:[A-Z][a-z]+(?:-[A-Z][a-z]+)*|[A-Z]{2,6})`;
 const TERM = new RegExp(String.raw`\b${WORD}(?:(?: (?:of|and|for|on|to|in) | )${WORD})+\b`, 'gu');
+/** A single Capitalised word on its own ("Transformer"), not an all-caps abbreviation — those go through the
+ *  separate no-translate list (FR-28) instead, so a word is not handled by two different mechanisms at once. */
+const SINGLE_WORD_TERM = /\b[A-Z][a-z]{2,}\b/gu;
 /** Words that begin a sentence, not a term. */
 const SENTENCE_STARTERS = new Set(['The', 'A', 'An', 'In', 'We', 'Our', 'This', 'That', 'These', 'Those', 'For', 'It', 'Its', 'On', 'At', 'As', 'If', 'When', 'While', 'Then', 'Each', 'Both', 'All', 'To', 'By', 'With', 'From', 'See', 'Table', 'Figure', 'Section']);
 
 const MIN_COUNT = 2;
+/** A lone word is common enough on its own that two chance repeats are not convincing; ask for more before locking it. */
+const MIN_COUNT_SINGLE_WORD = 3;
 const MAX_TERMS = 40;
 const MAX_TERM_CHARS = 60;
 
-/** Terms of two to five words that appear at least twice, longest first (so "Multi-Head Attention" wins over "Attention"). */
+/**
+ * Terms that appear at least twice, longest first (so "Multi-Head Attention" wins over "Attention"): phrases of
+ * two to five Capitalised words, and single Capitalised words (a model or method name, say) repeated often enough
+ * that it reads as a name rather than an ordinary capitalised sentence-start. Plain lowercase words are not
+ * covered — there is no Capitalisation signal left to tell a term from ordinary prose, and locking an everyday
+ * word to one fixed translation risks being wrong in some of the sentences it appears in (doc/24 §6).
+ */
 export function findRepeatedTerms(texts: string[]): string[] {
   const counts = new Map<string, number>();
   for (const text of texts) {
@@ -28,9 +39,14 @@ export function findRepeatedTerms(texts: string[]): string[] {
       if (term.split(' ').length > 5 || term.length > MAX_TERM_CHARS) continue;
       counts.set(term, (counts.get(term) ?? 0) + 1);
     }
+    for (const match of text.matchAll(SINGLE_WORD_TERM)) {
+      const word = match[0];
+      if (SENTENCE_STARTERS.has(word)) continue;
+      counts.set(word, (counts.get(word) ?? 0) + 1);
+    }
   }
   return [...counts]
-    .filter(([term, n]) => n >= MIN_COUNT && term.includes(' '))
+    .filter(([term, n]) => n >= (term.includes(' ') ? MIN_COUNT : MIN_COUNT_SINGLE_WORD))
     .sort((a, b) => b[1] - a[1])
     .slice(0, MAX_TERMS)
     .map(([term]) => term)
