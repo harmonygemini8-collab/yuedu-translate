@@ -164,6 +164,41 @@ export function isValidSpeak(msg: unknown): msg is SpeakRequest {
   return !!m && m.type === 'SPEAK' && isTargetLang(m.lang) && typeof m.text === 'string' && m.text.trim().length > 0 && m.text.length <= MAX_SPEAK_CHARS;
 }
 
+/**
+ * The floating button's "auto-translate this site" switch (doc/04 §4.3). Turning it off never
+ * needs a fresh prompt — `chrome.permissions.remove` works without one. Turning it on usually
+ * does: `chrome.permissions.request` only succeeds during a genuine user gesture on an extension
+ * surface, which a content script is not, even relayed through here — unless the reader already
+ * granted "run on all sites", in which case this site's access is already covered and nothing new
+ * needs requesting. So `on: true` checks that first and, only when it is missing, answers
+ * `{ ok: false }` rather than attempting (and failing) a request of its own — the content script
+ * then falls back to OPEN_AUTO_SITE, which gets the one unavoidable click onto a real extension
+ * page instead of asking the reader to type the host there.
+ */
+export interface SetAutoSiteRequest {
+  type: 'SET_AUTO_SITE';
+  host: string;
+  on: boolean;
+}
+
+export type SetAutoSiteResponse = { ok: true } | { ok: false; error: ErrorCode };
+
+export function isValidSetAutoSite(msg: unknown): msg is SetAutoSiteRequest {
+  const m = msg as Partial<SetAutoSiteRequest> | null;
+  return !!m && m.type === 'SET_AUTO_SITE' && typeof m.host === 'string' && m.host.length > 0 && m.host.length <= 253 && typeof m.on === 'boolean';
+}
+
+/** Opens the options page with the auto-translate host field already filled in, so turning the switch on never needs typing. */
+export interface OpenAutoSiteRequest {
+  type: 'OPEN_AUTO_SITE';
+  host: string;
+}
+
+export function isValidOpenAutoSite(msg: unknown): msg is OpenAutoSiteRequest {
+  const m = msg as Partial<OpenAutoSiteRequest> | null;
+  return !!m && m.type === 'OPEN_AUTO_SITE' && typeof m.host === 'string' && m.host.length > 0 && m.host.length <= 253;
+}
+
 export interface StateChangedMessage {
   type: 'STATE_CHANGED';
   state: PageState;

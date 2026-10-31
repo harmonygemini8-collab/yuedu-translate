@@ -278,6 +278,15 @@ const autoHost = $<HTMLInputElement>('auto-host');
 const autoList = $('auto-list');
 const autoStatus = $('auto-status');
 
+// Opened from the floating button's "auto-translate this site" switch (doc/04 §4.3): the host is
+// already known there, but requesting its permission needs a real click on this page, not just
+// arriving here, so it is filled in rather than added outright — one click instead of typing it.
+const deepLinkHost = new URLSearchParams(location.search).get('autoHost');
+if (deepLinkHost) {
+  autoHost.value = deepLinkHost;
+  autoHost.focus();
+}
+
 /**
  * One grant instead of adding sites one by one. The pattern is already in
  * `optional_host_permissions`, so offering it here costs nothing at install time: the broad

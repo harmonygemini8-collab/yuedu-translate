@@ -90,6 +90,7 @@ function init(): YilinInstance {
     translated: state.translated,
     speaking: reader.active,
     displayMode: latestSettings?.displayMode ?? 'bilingual',
+    autoTranslateHere: latestSettings ? isAutoTranslateSite(latestSettings, location.hostname) : false,
   });
 
   /** Top frame only; `auto` means touch devices, which have no shortcut, right-click menu or hover. */
@@ -126,6 +127,24 @@ function init(): YilinInstance {
         toggle: () => void handle({ type: 'TOGGLE' }),
         toggleRead: () => (reader.active ? reader.stop('floating button') : reader.start()),
         toggleMode: () => void saveSettings({ displayMode: latestSettings?.displayMode === 'translation' ? 'bilingual' : 'translation' }),
+        toggleSelectionLookup: () => void saveSettings({ selectionLookup: !latestSettings?.selectionLookup }),
+        // Turning it off never needs a fresh permission prompt, so it can happen right here;
+        // turning it on does, and a content script's click is not a gesture Chrome will honour
+        // for that, even relayed through the background — so that direction opens the options
+        // page instead, with this host already filled in (doc/04 §4.3).
+        toggleAutoTranslateSite: () => {
+          const host = location.hostname;
+          const wasOn = latestSettings ? isAutoTranslateSite(latestSettings, host) : false;
+          void (async () => {
+            const result = (await runtime.sendMessage({ type: 'SET_AUTO_SITE', host, on: !wasOn }).catch(() => undefined)) as
+              | { ok: boolean }
+              | undefined;
+            // Turning it off always succeeds here. Turning it on only does when "run on all
+            // sites" already covers this host; otherwise the options page gets the one click
+            // that is still unavoidable, with the host already filled in (doc/04 §4.3).
+            if (!wasOn && !result?.ok) await runtime.sendMessage({ type: 'OPEN_AUTO_SITE', host }).catch(() => {});
+          })();
+        },
       },
     });
     if (controller) floating.update(floatingState(controller.getState()));

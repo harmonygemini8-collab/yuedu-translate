@@ -3,20 +3,23 @@ import {
   isRestrictedUrl,
   isSingleWord,
   isValidLookup,
+  isValidOpenAutoSite,
   isValidSegments,
+  isValidSetAutoSite,
   isValidSpeak,
   type ContentRequest,
   type LookupEntry,
   type LookupRequest,
   type LookupResponse,
   type SegmentResult,
+  type SetAutoSiteResponse,
   type SpeakResponse,
   type TranslateBatchRequest,
   type TranslateBatchResponse,
 } from '../shared/messages';
 import { API_BASE, effectiveEngine, loadAuthToken, loadCustomKey } from '../shared/api';
 import { lookupWithCustom, translateWithCustom } from './custom-engine';
-import { ALL_SITES_ORIGINS, autoScriptMatches, isTargetLang, loadSettings, siteOrigins, type EngineChoice } from '../shared/settings';
+import { ALL_SITES_ORIGINS, autoScriptMatches, isTargetLang, loadSettings, normalizeHost, saveSettings, siteOrigins, type EngineChoice } from '../shared/settings';
 import { createTranslator, resolveUiLang } from '../shared/i18n';
 import { translateWithGoogleFree } from './google-free';
 import { translateWithFallback } from './engines';
@@ -106,6 +109,51 @@ chrome.runtime.onMessage.addListener((message: unknown, sender, sendResponse: (r
     .then((entry) => sendResponse({ ok: true, entry }))
     .catch((err) => sendResponse({ ok: false, error: err instanceof PlatformError ? err.code : 'PROVIDER_UNAVAILABLE' }));
   return true;
+});
+
+// The floating button's auto-translate switch (doc/04 §4.3). Turning it off never needs a fresh
+// prompt, so it always happens right here. Turning it on only can when "run on all sites" is
+// already granted — that already covers this host, so nothing new needs requesting — otherwise
+// this answers `{ ok: false }` and the content script falls back to OPEN_AUTO_SITE below.
+chrome.runtime.onMessage.addListener((message: unknown, sender, sendResponse: (r: SetAutoSiteResponse) => void) => {
+  if ((message as { type?: unknown } | null)?.type !== 'SET_AUTO_SITE') return;
+  if (sender.id !== chrome.runtime.id || !sender.tab) return;
+  if (!isValidSetAutoSite(message)) {
+    sendResponse({ ok: false, error: 'INVALID_REQUEST' });
+    return;
+  }
+  const host = normalizeHost(message.host);
+  if (!host) {
+    sendResponse({ ok: false, error: 'INVALID_REQUEST' });
+    return;
+  }
+  const { on } = message;
+  void (async () => {
+    if (on && !(await chrome.permissions.contains({ origins: ALL_SITES_ORIGINS }))) {
+      sendResponse({ ok: false, error: 'INVALID_REQUEST' });
+      return;
+    }
+    const settings = await loadSettings();
+    const sites = on ? [...new Set([...settings.autoTranslateSites, host])] : settings.autoTranslateSites.filter((s) => s !== host);
+    await saveSettings({ autoTranslateSites: sites });
+    if (!on) await chrome.permissions.remove({ origins: siteOrigins(host) }).catch(() => false);
+    sendResponse({ ok: true });
+  })();
+  return true;
+});
+
+// Turning the floating button's auto-translate switch on (doc/04 §4.3). `chrome.permissions.request`
+// only succeeds during a genuine user gesture on an extension surface — a content script's own
+// click is a real gesture on the page, but not one Chrome will honour for this API, even relayed
+// through here. Opening the options page with the host already filled in means the only click
+// still needed is a real one, on a real extension page, and it is not typing.
+chrome.runtime.onMessage.addListener((message: unknown, sender) => {
+  if ((message as { type?: unknown } | null)?.type !== 'OPEN_AUTO_SITE') return;
+  if (sender.id !== chrome.runtime.id || !sender.tab) return;
+  if (!isValidOpenAutoSite(message)) return;
+  const host = normalizeHost(message.host);
+  if (!host) return;
+  void chrome.tabs.create({ url: chrome.runtime.getURL(`options.html?autoHost=${encodeURIComponent(host)}#sites`) });
 });
 
 // What a page script reports about itself (does it run here, and does it want to show its button), so a
